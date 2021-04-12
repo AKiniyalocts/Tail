@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.akiniyalocts.tail.R
 import com.akiniyalocts.tail.api.model.Drink
 import dev.chrisbanes.accompanist.coil.CoilImage
@@ -34,6 +35,7 @@ fun HomeScreen(){
 fun HomeList(){
     val viewModel = getViewModel<HomeViewModel>()
     val popularItems = viewModel.popularItems
+    val categories = viewModel.drinkCategories
 
     LazyColumn {
 
@@ -47,6 +49,10 @@ fun HomeList(){
                     }
                 }
             }
+        }
+
+        items(categories.value){
+            Text(it.name, modifier = Modifier.fillMaxWidth().padding(8.dp))
         }
     }
 }

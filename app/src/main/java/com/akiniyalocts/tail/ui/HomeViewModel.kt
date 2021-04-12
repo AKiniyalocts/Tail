@@ -3,6 +3,7 @@ package com.akiniyalocts.tail.ui
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.akiniyalocts.tail.api.Category
 import com.akiniyalocts.tail.api.model.Drink
 import com.akiniyalocts.tail.repo.SearchRepo
 import com.akiniyalocts.tail.ui.utils.AsyncState
@@ -15,8 +16,11 @@ class HomeViewModel(private val searchRepo: SearchRepo): ViewModel() {
     val popularItems = mutableStateOf(emptyList<Drink>())
     val popularItemsState = mutableStateOf<AsyncState<Unit>>(Loading)
 
+    val drinkCategories = mutableStateOf(emptyList<Category>())
+
     init {
         getPopularDrinks()
+        getCategories()
     }
 
     fun getPopularDrinks() = viewModelScope.launch {
@@ -29,6 +33,14 @@ class HomeViewModel(private val searchRepo: SearchRepo): ViewModel() {
                 popularItemsState.value = Fail(it)
             }
         )
+    }
+
+    fun getCategories() = viewModelScope.launch {
+        searchRepo.getCategories().onSuccess {
+            drinkCategories.value = it
+        }.onFailure {
+            it.printStackTrace()
+        }
     }
 
 }
