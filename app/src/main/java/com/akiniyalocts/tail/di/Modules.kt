@@ -1,6 +1,10 @@
 package com.akiniyalocts.tail.di
 
 import com.akiniyalocts.tail.api.CocktailApi
+import com.akiniyalocts.tail.repo.SearchRepo
+import com.akiniyalocts.tail.repo.SearchRepoImp
+import com.akiniyalocts.tail.ui.HomeViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -18,4 +22,12 @@ val dataModule = module {
     single {
         get<Retrofit>().create(CocktailApi::class.java)
     }
+
+    single<SearchRepo>{ SearchRepoImp(get()) }
 }
+
+val viewModelModule = module {
+    viewModel { HomeViewModel(get()) }
+}
+
+val all = listOf(dataModule, viewModelModule)

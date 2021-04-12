@@ -11,71 +11,59 @@ data class Drink(
     @Json(name = "idDrink")
     val idDrink: String,
     @Json(name = "strAlcoholic")
-    val strAlcoholic: String,
+    val alcoholic: String,
     @Json(name = "strCategory")
-    val strCategory: String,
+    val category: String,
     @Json(name = "strCreativeCommonsConfirmed")
-    val strCreativeCommonsConfirmed: String,
+    val creativeCommonsConfirmed: String,
     @Json(name = "strDrink")
-    val strDrink: String,
+    val drink: String,
     @Json(name = "strDrinkAlternate")
-    val strDrinkAlternate: String?,
+    val drinkAlternate: String?,
     @Json(name = "strDrinkThumb")
-    val strDrinkThumb: String,
+    val drinkThumb: String?,
     @Json(name = "strGlass")
-    val strGlass: String,
+    val glass: String?,
     @Json(name = "strIBA")
-    val strIBA: String,
+    val iba: String?,
     @Json(name = "strImageAttribution")
-    val strImageAttribution: String,
+    val imageAttribution: String?,
     @Json(name = "strImageSource")
-    val strImageSource: String,
+    val imageSource: String?,
     @Json(name = "strIngredient1")
-    val strIngredient1: String,
+    val ingredient1: String,
     @Json(name = "strIngredient10")
-    val strIngredient10: String?,
+    val ingredient10: String?,
     @Json(name = "strIngredient11")
-    val strIngredient11: String?,
+    val ingredient11: String?,
     @Json(name = "strIngredient12")
-    val strIngredient12: String?,
+    val ingredient12: String?,
     @Json(name = "strIngredient13")
-    val strIngredient13: String?,
+    val ingredient13: String?,
     @Json(name = "strIngredient14")
-    val strIngredient14: String?,
+    val ingredient14: String?,
     @Json(name = "strIngredient15")
-    val strIngredient15: String?,
+    val ingredient15: String?,
     @Json(name = "strIngredient2")
-    val strIngredient2: String,
+    val ingredient2: String?,
     @Json(name = "strIngredient3")
-    val strIngredient3: String,
+    val ingredient3: String?,
     @Json(name = "strIngredient4")
-    val strIngredient4: String,
+    val ingredient4: String?,
     @Json(name = "strIngredient5")
-    val strIngredient5: String?,
+    val ingredient5: String?,
     @Json(name = "strIngredient6")
-    val strIngredient6: String?,
+    val ingredient6: String?,
     @Json(name = "strIngredient7")
-    val strIngredient7: String?,
+    val ingredient7: String?,
     @Json(name = "strIngredient8")
-    val strIngredient8: String?,
+    val ingredient8: String?,
     @Json(name = "strIngredient9")
-    val strIngredient9: String?,
+    val ingredient9: String?,
     @Json(name = "strInstructions")
-    val strInstructions: String,
-    @Json(name = "strInstructionsDE")
-    val strInstructionsDE: String,
-    @Json(name = "strInstructionsES")
-    val strInstructionsES: String?,
-    @Json(name = "strInstructionsFR")
-    val strInstructionsFR: String?,
-    @Json(name = "strInstructionsIT")
-    val strInstructionsIT: String,
-    @Json(name = "strInstructionsZH-HANS")
-    val strInstructionsZHHANS: String?,
-    @Json(name = "strInstructionsZH-HANT")
-    val strInstructionsZHHANT: String?,
+    val instructions: String,
     @Json(name = "strMeasure1")
-    val strMeasure1: String,
+    val strMeasure1: String?,
     @Json(name = "strMeasure10")
     val strMeasure10: String?,
     @Json(name = "strMeasure11")
@@ -89,9 +77,9 @@ data class Drink(
     @Json(name = "strMeasure15")
     val strMeasure15: String?,
     @Json(name = "strMeasure2")
-    val strMeasure2: String,
+    val strMeasure2: String?,
     @Json(name = "strMeasure3")
-    val strMeasure3: String,
+    val strMeasure3: String?,
     @Json(name = "strMeasure4")
     val strMeasure4: String?,
     @Json(name = "strMeasure5")
@@ -105,7 +93,7 @@ data class Drink(
     @Json(name = "strMeasure9")
     val strMeasure9: String?,
     @Json(name = "strTags")
-    val strTags: String,
+    val strTags: String?,
     @Json(name = "strVideo")
     val strVideo: String?
 )

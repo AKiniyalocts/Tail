@@ -9,8 +9,8 @@ import retrofit2.http.Query
 
 interface CocktailApi {
     @GET("api/json/v2/{apiKey}/popular.php")
-    suspend fun getPopularCocktails(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey): Response<List<Drink>>
+    suspend fun getPopularCocktails(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey): Response<DrinksResponse>
 
     @GET("api/json/v2/{apiKey}/search.php")
-    suspend fun getSearchResults(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey, @Query("s") query: String): Response<List<Drink>>
+    suspend fun getSearchResults(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey, @Query("s") query: String): Response<DrinksResponse>
 }
