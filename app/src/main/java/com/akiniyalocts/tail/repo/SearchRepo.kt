@@ -10,8 +10,8 @@ interface SearchRepo {
     suspend fun searchCocktails(query: String): Result<List<Drink>>
     suspend fun getPopularCocktails(): Result<List<Drink>>
     suspend fun getCategories(): Result<List<Category>>
+    suspend fun getDrink(id: String): Result<Drink>
 }
-
 class SearchRepoImp(private val api: CocktailApi, private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO): SearchRepo{
     override suspend fun searchCocktails(query: String): Result<List<Drink>> {
         return try {
@@ -35,6 +35,17 @@ class SearchRepoImp(private val api: CocktailApi, private val coroutineDispatche
         }catch (e: Exception){
             Result.failure(e)
         }
-
     }
+
+    override suspend fun getDrink(id: String): Result<Drink> {
+        return try{
+            api.getCocktail(id = id).mapToResult {
+                it.drinks.first()
+            }
+        }catch (e: Exception){
+            Result.failure(e)
+        }
+    }
+
+
 }

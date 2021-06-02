@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -56,24 +57,42 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("com.google.android.material:material:1.3.0")
 
-    implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"] as String}")
-    implementation("androidx.compose.material:material:${rootProject.extra["compose_version"] as String}")
-    implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"] as String}")
+    val kotlin_version = rootProject.extra["kotlin_version"] as String
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
 
-    val navCompose = "1.0.0-alpha09"
-    implementation("androidx.navigation:navigation-compose:$navCompose")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2")
 
-    val koin = "3.0.1-beta-1"
-    implementation("io.insert-koin:koin-androidx-compose:$koin")
+    val compose_version = rootProject.extra["compose_version"] as String
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.activity:activity-compose:1.3.0-alpha05")
+    implementation ("androidx.compose.runtime:runtime:$compose_version")
+    implementation ("androidx.compose.ui:ui:$compose_version")
+    implementation ("androidx.compose.foundation:foundation-layout:$compose_version")
+    implementation ("androidx.compose.material:material:$compose_version")
+    implementation ("androidx.compose.material:material-icons-extended:$compose_version")
+    implementation ("androidx.compose.foundation:foundation:$compose_version")
+    implementation ("androidx.compose.animation:animation:$compose_version")
+    implementation ("androidx.compose.ui:ui-tooling:$compose_version")
+    implementation ("androidx.compose.runtime:runtime-livedata:$compose_version")
 
-    // retrofit
+    implementation ("androidx.appcompat:appcompat:1.3.0")
+    implementation ("androidx.activity:activity-ktx:1.2.3")
+    implementation ("androidx.core:core-ktx:1.6.0-alpha02")
+    implementation ("androidx.activity:activity-compose:1.3.0-alpha08")
+
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha05")
+
+    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha01")
+    implementation ("com.google.accompanist:accompanist-coil:0.10.0")
+
+    implementation ("com.google.dagger:hilt-android:2.35")
+    kapt ("com.google.dagger:hilt-android-compiler:2.35")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0-alpha02")
+
+
     val retrofitVersion = "2.9.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
@@ -85,7 +104,6 @@ dependencies {
 
     implementation("com.squareup.okhttp3:logging-interceptor:4.2.1")
 
-    implementation("dev.chrisbanes.accompanist:accompanist-coil:0.6.2")
 
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")

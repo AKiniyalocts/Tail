@@ -10,9 +10,12 @@ import com.akiniyalocts.tail.ui.utils.AsyncState
 import com.akiniyalocts.tail.ui.utils.Fail
 import com.akiniyalocts.tail.ui.utils.Loading
 import com.akiniyalocts.tail.ui.utils.Success
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(private val searchRepo: SearchRepo): ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(private val searchRepo: SearchRepo): ViewModel() {
     val popularItems = mutableStateOf(emptyList<Drink>())
     val popularItemsState = mutableStateOf<AsyncState<Unit>>(Loading)
 

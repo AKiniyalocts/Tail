@@ -1,7 +1,6 @@
 package com.akiniyalocts.tail.api
 
 import com.akiniyalocts.tail.BuildConfig
-import com.akiniyalocts.tail.api.model.Drink
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -16,4 +15,9 @@ interface CocktailApi {
 
     @GET("api/json/v2/{apiKey}/list.php?c=list")
     suspend fun getCategories(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey): Response<CategoriesResponse>
+
+    @GET("api/json/v2/{apiKey}/lookup.php")
+    suspend fun getCocktail(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey, @Query("i") id: String): Response<DrinksResponse>
+
+
 }
