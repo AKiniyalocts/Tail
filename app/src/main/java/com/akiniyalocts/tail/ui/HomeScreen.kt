@@ -11,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -80,7 +81,8 @@ fun SmallDrinkCard(drink: Drink, onClick: ((Drink) -> (Unit))){
             Image(
                 painter = painter,
                 contentDescription = "${drink.drink} image",
-                modifier = Modifier.weight(0.8f)
+                modifier = Modifier.weight(0.8f),
+                contentScale = ContentScale.Crop
             )
             when(painter.loadState){
                 ImageLoadState.Empty -> { }
