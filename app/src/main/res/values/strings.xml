@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Tail</string>
     <string name="title_popular_drinks">Popular Drinks</string>
+    <string name="title_drink_categories">Categories</string>
 </resources>

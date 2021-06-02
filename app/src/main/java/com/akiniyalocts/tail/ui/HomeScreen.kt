@@ -1,5 +1,6 @@
 package com.akiniyalocts.tail.ui
 
+import android.graphics.Outline
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,7 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.akiniyalocts.tail.R
@@ -25,7 +28,7 @@ import com.google.accompanist.imageloading.ImageLoadState
 @Composable
 fun HomeScreen(navController: NavController){
     Scaffold(
-        topBar = { TopAppBar(title = { Text(text = "Tail")}) }
+        topBar = { TopAppBar(title = { Text(text = stringResource(id = R.string.app_name), fontWeight = FontWeight.Black, fontSize = 24.sp) }) }
     ) {
         HomeList(navController)
     }
@@ -40,8 +43,7 @@ fun HomeList(navController: NavController, viewModel: HomeViewModel = hiltViewMo
 
         item {
             Column(Modifier.fillMaxWidth()) {
-                Text(stringResource(id = R.string.title_popular_drinks))
-
+                HomeHeaderText(stringResource = R.string.title_popular_drinks)
                 LazyRow {
                     items(popularItems.value){ item ->
                         SmallDrinkCard(drink = item, onClick = { drink ->
@@ -51,13 +53,30 @@ fun HomeList(navController: NavController, viewModel: HomeViewModel = hiltViewMo
                 }
             }
         }
-
-        items(categories.value){
-            Text(it.name, modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp))
+        item {
+            HomeHeaderText(stringResource = R.string.title_drink_categories)
+        }
+        items(categories.value.chunked(2)){
+            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)) {
+                it.forEach {
+                    OutlinedButton(
+                        modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 4.dp),
+                        onClick = {
+                            //TODO: navigate to drinks for categories
+                        }
+                    ) {
+                        Text(it.name)
+                    }
+                }
+            }
         }
     }
+}
+
+@Composable
+fun HomeHeaderText(stringResource: Int? = null, string: String? = null){
+    val text = if(stringResource != null) stringResource(id = stringResource) else string.orEmpty()
+    Text(text, fontWeight = FontWeight.Black, fontSize = 20.sp, modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 12.dp))
 }
 
 @Composable
@@ -69,7 +88,7 @@ fun SmallDrinkCard(drink: Drink, onClick: ((Drink) -> (Unit))){
 
     Card(
         modifier = Modifier
-            .padding(4.dp)
+            .padding(start = 16.dp, top = 4.dp, bottom = 4.dp, end = 16.dp)
             .height(200.dp)
             .width(180.dp)
             .clickable {

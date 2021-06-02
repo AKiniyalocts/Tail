@@ -16,6 +16,6 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp
     ),
-    defaultFontFamily = FontFamily.SansSerif,
+    defaultFontFamily = FontFamily.Default,
 
 )
