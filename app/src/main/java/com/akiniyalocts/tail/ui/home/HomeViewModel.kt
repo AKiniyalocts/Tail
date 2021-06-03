@@ -1,4 +1,4 @@
-package com.akiniyalocts.tail.ui
+package com.akiniyalocts.tail.ui.home
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel

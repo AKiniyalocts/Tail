@@ -8,3 +8,4 @@ val Brown700 = Color(0xFFcb9b8c)
 val Pink200 = Color(0xFFfff8e1)
 
 val DarkBlue = Color(0xFF37474f)
+val DarkBlueDark = Color(0xFF4D6570)

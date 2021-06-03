@@ -1,4 +1,4 @@
-package com.akiniyalocts.tail.ui
+package com.akiniyalocts.tail.ui.home
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -18,9 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
-import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,10 +30,9 @@ import coil.transform.RoundedCornersTransformation
 import com.akiniyalocts.tail.R
 import com.akiniyalocts.tail.api.model.Drink
 import com.akiniyalocts.tail.database.FavoriteDrink
+import com.akiniyalocts.tail.ui.FavoriteDrinkListItem
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.imageloading.ImageLoadState
-import com.google.android.material.color.MaterialColors
-import kotlin.math.exp
 
 
 @Composable
@@ -88,10 +85,22 @@ fun HomeList(navController: NavController, viewModel: HomeViewModel = hiltViewMo
                 Text(text = "No favorites, add some!")
             }
         } else {
-            items(favorites.value) {
+            items(favorites.value.subList(0, 4)) {
                 FavoriteDrinkListItem(drink = it)
             }
         }
+
+        item{
+            TextButton(
+                onClick = {
+
+                },
+                modifier = Modifier.padding(12.dp)
+            ) {
+                Text(stringResource(id = R.string.more))
+            }
+        }
+
 
 
         item {
@@ -164,80 +173,5 @@ fun SmallDrinkCard(drink: Drink, onClick: ((Drink) -> (Unit))){
                 .weight(0.2f))
         }
 
-    }
-}
-
-@Composable
-fun FavoriteDrinkListItem(drink: FavoriteDrink){
-    var expanded = remember {
-        mutableStateOf(false)
-    }
-
-    val painter = rememberCoilPainter(
-        request = drink.imageThumbnail,
-        requestBuilder = {
-            transformations(RoundedCornersTransformation(12f))
-        }
-    )
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-            .border(
-                1.dp,
-                MaterialTheme.colors.primary.copy(alpha = ButtonDefaults.OutlinedBorderOpacity),
-                RoundedCornerShape(8.dp)
-            )
-            .clickable {
-
-            }
-    ) {
-        Column(
-            modifier = Modifier.animateContentSize()
-        ) {
-            Row(
-                verticalAlignment = CenterVertically
-            ) {
-                Image(
-                    painter = painter,
-                    contentDescription = drink.name,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .padding(end = 16.dp, start = 12.dp, top = 12.dp, bottom = 12.dp)
-                        .size(80.dp)
-                )
-                Text(
-                    text = drink.name,
-                    modifier = Modifier.weight(1f)
-                )
-
-                IconButton(
-                    onClick = {
-                        expanded.value = !expanded.value
-                    },
-                    modifier = Modifier.padding(end = 12.dp)
-                ) {
-                    Icon(
-                        imageVector = if (expanded.value) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                        contentDescription = "Expand"
-                    )
-                }
-            }
-
-            if(expanded.value){
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = stringResource(id = R.string.title_instructions),
-                    modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colors.onPrimary
-                )
-                Text(
-                    text = drink.instructions.orEmpty(),
-                    modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
-                    fontWeight = FontWeight.Light
-                )
-            }
-        }
     }
 }
