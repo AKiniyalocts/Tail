@@ -7,6 +7,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -20,12 +22,18 @@ import com.google.accompanist.coil.rememberCoilPainter
 fun CocktailDetailScreen(drinkId: String?, viewModel: CocktailDetailViewModel = hiltViewModel()){
     val drink = viewModel.drink.value
    viewModel.drinkId = drinkId
+    val isFavorite = viewModel.isFavorite.value
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(text = drink?.drink.orEmpty())},
-                navigationIcon = { IconButton(onClick = {} ){ Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back") } }
+                navigationIcon = { IconButton(onClick = {} ){ Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back") } },
+                actions = { IconToggleButton(checked = isFavorite, onCheckedChange = {
+                    viewModel.toggleFavorite(it)
+                }) {
+                    Icon(imageVector = if(isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder, contentDescription = "Favorite Button")
+                } }
             )
         }
     ) {
