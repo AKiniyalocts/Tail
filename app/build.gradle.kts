@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -20,17 +22,20 @@ android {
     }
 
     buildTypes {
+
+        val cocktailDbApiKey: String = gradleLocalProperties(rootProject.rootDir).getProperty("cocktailDbApiKey", "1") // default to '1' as that is the "test api key" for cocktaildb
+
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "cocktailDbApiKey", "\"9973533\"")
+            buildConfigField("String", "cocktailDbApiKey", cocktailDbApiKey)
 
         }
         debug {
-            buildConfigField("String", "cocktailDbApiKey", "\"9973533\"")
+            buildConfigField("String", "cocktailDbApiKey", cocktailDbApiKey)
         }
     }
     compileOptions {
