@@ -12,6 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.outlined.LocalDrink
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -49,10 +50,14 @@ fun FavoritesListScreen(navController: NavController, viewModel: FavoritesViewMo
             )
         }
     ) {
-        LazyColumn {
-            items(favorites.value){
-                FavoriteDrinkListItem(drink = it)
+        if(favorites.value.isNotEmpty()) {
+            LazyColumn {
+                items(favorites.value) {
+                    FavoriteDrinkListItem(drink = it)
+                }
             }
+        }else{
+            FavoritesEmptyState(modifier = Modifier.fillMaxSize())
         }
     }
 }
@@ -60,7 +65,7 @@ fun FavoritesListScreen(navController: NavController, viewModel: FavoritesViewMo
 
 @Composable
 fun FavoriteDrinkListItem(drink: FavoriteDrink){
-    var expanded = remember {
+    val expanded = remember {
         mutableStateOf(false)
     }
 
@@ -129,6 +134,19 @@ fun FavoriteDrinkListItem(drink: FavoriteDrink){
                     fontWeight = FontWeight.Light
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun FavoritesEmptyState(modifier: Modifier){
+
+    Box(
+        modifier.padding(top = 12.dp, bottom = 12.dp), contentAlignment = Alignment.Center
+    ) {
+        Row {
+            Icon(imageVector = Icons.Outlined.LocalDrink, contentDescription = null, modifier = Modifier.padding(end = 8.dp), tint = MaterialTheme.colors.onSecondary)
+            Text(text = "Your favorite drinks show here", color = MaterialTheme.colors.onSecondary)
         }
     }
 }

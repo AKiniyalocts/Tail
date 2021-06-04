@@ -1,8 +1,6 @@
 package com.akiniyalocts.tail.ui.home
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,27 +8,22 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.transform.RoundedCornersTransformation
 import com.akiniyalocts.tail.R
 import com.akiniyalocts.tail.api.model.Drink
-import com.akiniyalocts.tail.database.FavoriteDrink
 import com.akiniyalocts.tail.ui.FavoriteDrinkListItem
+import com.akiniyalocts.tail.ui.FavoritesEmptyState
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.imageloading.ImageLoadState
 
@@ -82,24 +75,26 @@ fun HomeList(navController: NavController, viewModel: HomeViewModel = hiltViewMo
 
         if (favorites.value.isEmpty()) {
             item {
-                Text(text = "No favorites, add some!")
+                FavoritesEmptyState(Modifier.fillMaxWidth())
             }
         } else {
-            items(favorites.value.subList(0, 4)) {
+            items(favorites.value.take(4)) {
                 FavoriteDrinkListItem(drink = it)
             }
-        }
 
-        item{
-            TextButton(
-                onClick = {
+            item{
+                TextButton(
+                    onClick = {
 
-                },
-                modifier = Modifier.padding(12.dp)
-            ) {
-                Text(stringResource(id = R.string.more))
+                    },
+                    modifier = Modifier.padding(12.dp)
+                ) {
+                    Text(stringResource(id = R.string.more))
+                }
             }
         }
+
+
 
 
 
@@ -124,6 +119,7 @@ fun HomeList(navController: NavController, viewModel: HomeViewModel = hiltViewMo
     }
 }
 
+@Preview
 @Composable
 fun HomeHeaderText(stringResource: Int? = null, string: String? = null){
     val text = if(stringResource != null) stringResource(id = stringResource) else string.orEmpty()
