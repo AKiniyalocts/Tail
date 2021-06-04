@@ -23,7 +23,7 @@ android {
 
     buildTypes {
 
-        val cocktailDbApiKey: String = gradleLocalProperties(rootProject.rootDir).getProperty("cocktailDbApiKey", "1") // default to '1' as that is the "test api key" for cocktaildb
+        val cocktailDbApiKey: String = gradleLocalProperties(rootProject.rootDir).getProperty("cocktailDbApiKey", "\"1\"") // default to '1' as that is the "test api key" for cocktaildb
 
         release {
             isMinifyEnabled = false
