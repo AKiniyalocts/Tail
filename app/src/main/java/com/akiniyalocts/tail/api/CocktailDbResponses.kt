@@ -1,6 +1,7 @@
 package com.akiniyalocts.tail.api
 
 import com.akiniyalocts.tail.api.model.Drink
+import com.akiniyalocts.tail.api.model.Ingredient
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -8,4 +9,10 @@ import com.squareup.moshi.JsonClass
 data class DrinksResponse(
     @Json(name = "drinks")
     val drinks: List<Drink>
+)
+
+@JsonClass(generateAdapter = true)
+data class IngredientsResponse(
+    @Json(name = "ingredients")
+    val ingredients: List<Ingredient>
 )
