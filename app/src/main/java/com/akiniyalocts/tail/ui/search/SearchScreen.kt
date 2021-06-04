@@ -1,4 +1,4 @@
-package com.akiniyalocts.tail.ui
+package com.akiniyalocts.tail.ui.search
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController

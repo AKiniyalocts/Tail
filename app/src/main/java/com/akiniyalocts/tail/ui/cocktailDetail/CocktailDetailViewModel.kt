@@ -4,8 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akiniyalocts.tail.api.model.Drink
-import com.akiniyalocts.tail.database.FavoriteDrink
-import com.akiniyalocts.tail.database.FavoriteDrinkDao
+import com.akiniyalocts.tail.database.favorite.FavoriteDrink
+import com.akiniyalocts.tail.database.favorite.FavoriteDrinkDao
 import com.akiniyalocts.tail.repo.SearchRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect

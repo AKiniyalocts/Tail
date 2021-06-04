@@ -19,7 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.akiniyalocts.tail.ui.FavoritesListScreen
+import com.akiniyalocts.tail.ui.favorites.FavoritesListScreen
 import com.akiniyalocts.tail.ui.cocktailDetail.CocktailDetailScreen
 import com.akiniyalocts.tail.ui.home.HomeScreen
 import com.akiniyalocts.tail.ui.theme.TailTheme

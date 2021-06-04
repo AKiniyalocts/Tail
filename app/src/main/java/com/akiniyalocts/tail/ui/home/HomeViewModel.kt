@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.akiniyalocts.tail.api.Category
 import com.akiniyalocts.tail.api.model.Drink
-import com.akiniyalocts.tail.database.FavoriteDrinkDao
+import com.akiniyalocts.tail.database.favorite.FavoriteDrinkDao
 import com.akiniyalocts.tail.repo.SearchRepo
 import com.akiniyalocts.tail.ui.utils.AsyncState
 import com.akiniyalocts.tail.ui.utils.Fail

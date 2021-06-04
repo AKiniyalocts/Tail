@@ -1,4 +1,4 @@
-package com.akiniyalocts.tail.ui
+package com.akiniyalocts.tail.ui.favorites
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -28,8 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.transform.RoundedCornersTransformation
 import com.akiniyalocts.tail.R
-import com.akiniyalocts.tail.database.FavoriteDrink
-import com.akiniyalocts.tail.ui.favorites.FavoritesViewModel
+import com.akiniyalocts.tail.database.favorite.FavoriteDrink
 import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable

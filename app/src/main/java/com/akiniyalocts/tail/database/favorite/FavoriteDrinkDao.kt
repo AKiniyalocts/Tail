@@ -1,4 +1,4 @@
-package com.akiniyalocts.tail.database
+package com.akiniyalocts.tail.database.favorite
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow

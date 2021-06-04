@@ -22,8 +22,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.akiniyalocts.tail.R
 import com.akiniyalocts.tail.api.model.Drink
-import com.akiniyalocts.tail.ui.FavoriteDrinkListItem
-import com.akiniyalocts.tail.ui.FavoritesEmptyState
+import com.akiniyalocts.tail.ui.favorites.FavoriteDrinkListItem
+import com.akiniyalocts.tail.ui.favorites.FavoritesEmptyState
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.imageloading.ImageLoadState
 
