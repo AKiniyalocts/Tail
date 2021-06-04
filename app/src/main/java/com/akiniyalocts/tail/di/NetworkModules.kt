@@ -1,6 +1,9 @@
 package com.akiniyalocts.tail.di
 
 import com.akiniyalocts.tail.api.CocktailApi
+import com.akiniyalocts.tail.database.ingredient.IngredientDao
+import com.akiniyalocts.tail.repo.IngredientsRepo
+import com.akiniyalocts.tail.repo.IngredientsRepoImp
 import com.akiniyalocts.tail.repo.SearchRepo
 import com.akiniyalocts.tail.repo.SearchRepoImp
 import dagger.Module
@@ -32,5 +35,9 @@ object NetworkModules{
     fun provideSearchRepo(api: CocktailApi): SearchRepo{
         return SearchRepoImp(api)
     }
+
+    @Singleton
+    @Provides
+    fun provideIngredientRepo(api: CocktailApi, dao: IngredientDao): IngredientsRepo = IngredientsRepoImp(api, dao)
 }
 

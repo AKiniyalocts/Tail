@@ -26,4 +26,8 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideFavoriteDrinkDao(database: AppDatabase) = database.getFavoriteDrinksDao()
+
+    @Singleton
+    @Provides
+    fun provideLocalIngredientsDao(database: AppDatabase) = database.getLocalIngredientsDao()
 }

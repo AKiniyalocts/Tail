@@ -13,6 +13,6 @@ data class DrinksResponse(
 
 @JsonClass(generateAdapter = true)
 data class IngredientsResponse(
-    @Json(name = "ingredients")
+    @Json(name = "drinks")
     val ingredients: List<Ingredient>
 )

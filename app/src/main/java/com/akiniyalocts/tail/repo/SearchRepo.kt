@@ -12,7 +12,7 @@ interface SearchRepo {
     suspend fun getPopularCocktails(): Result<List<Drink>>
     suspend fun getCategories(): Result<List<Category>>
     suspend fun getDrink(id: String): Result<Drink>
-    suspend fun getIngredient(name: String): Result<Ingredient>
+    suspend fun getIngredients(name: String): Result<List<Ingredient>>
 }
 class SearchRepoImp(private val api: CocktailApi, private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO): SearchRepo{
     override suspend fun searchCocktails(query: String): Result<List<Drink>> {
@@ -49,11 +49,9 @@ class SearchRepoImp(private val api: CocktailApi, private val coroutineDispatche
         }
     }
 
-    override suspend fun getIngredient(name: String): Result<Ingredient> {
+    override suspend fun getIngredients(name: String): Result<List<Ingredient>> {
         return try {
-            api.getIngredient(ingredientName = name).mapToResult {
-                it.ingredients.first()
-            }
+           Result.success(emptyList())
         }catch (e: Exception){
             Result.failure(e)
         }
