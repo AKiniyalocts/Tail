@@ -21,7 +21,7 @@ data class CocktailDetailsDisplayModel(
     val ingredients: List<Ingredient>,
     val instructions: String,
     val image: String?,
-    val chips: List<String>,
+    val tags: List<String>,
 ) {
     companion object {
         fun fromDrink(drink: Drink): CocktailDetailsDisplayModel {

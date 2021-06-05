@@ -23,8 +23,6 @@ import com.google.accompanist.coil.rememberCoilPainter
 fun CocktailDetailScreen(drinkId: String?, viewModel: CocktailDetailViewModel = hiltViewModel()) {
     viewModel.drinkId = drinkId
     val isFavorite = viewModel.isFavorite.value
-
-    // TODO: Remember
     val viewState = viewModel.displayDrink.value
     val title = viewModel.pageTitle.value
 
@@ -111,7 +109,7 @@ fun CocktailDetailContent(drink: CocktailDetailsDisplayModel) {
         item {
             Column(modifier = Modifier.padding(16.dp)) {
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    items(drink.chips) {
+                    items(drink.tags) {
                         TagChip(it)
                     }
                 }

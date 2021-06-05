@@ -10,14 +10,12 @@ data class Drink(
     val dateModified: String,
     @Json(name = "idDrink")
     val idDrink: String,
-
     @Json(name = "strAlcoholic")
     val alcoholic: String,
     @Json(name = "strCategory")
     val category: String,
     @Json(name = "strCreativeCommonsConfirmed")
     val creativeCommonsConfirmed: String,
-
     @Json(name = "strDrink")
     val drink: String,
     @Json(name = "strDrinkAlternate")
