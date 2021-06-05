@@ -1,9 +1,11 @@
 package com.akiniyalocts.tail.ui.cocktailDetail
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -15,44 +17,91 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.akiniyalocts.tail.R
-import com.akiniyalocts.tail.api.model.Drink
 import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable
-fun CocktailDetailScreen(drinkId: String?, viewModel: CocktailDetailViewModel = hiltViewModel()){
-    val drink = viewModel.drink.value
-   viewModel.drinkId = drinkId
+fun CocktailDetailScreen(drinkId: String?, viewModel: CocktailDetailViewModel = hiltViewModel()) {
+    viewModel.drinkId = drinkId
     val isFavorite = viewModel.isFavorite.value
+
+    // TODO: Remember
+    val viewState = viewModel.displayDrink.value
+    val title = viewModel.pageTitle.value
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = drink?.drink.orEmpty())},
-                navigationIcon = { IconButton(onClick = {} ){ Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back") } },
-                actions = { IconToggleButton(checked = isFavorite, onCheckedChange = {
-                    viewModel.toggleFavorite(it)
-                }) {
-                    Icon(imageVector = if(isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder, contentDescription = "Favorite Button")
-                } }
+                title = { Text(text = title) },
+                navigationIcon = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                },
+                actions = {
+                    IconToggleButton(checked = isFavorite, onCheckedChange = {
+                        viewModel.toggleFavorite(it)
+                    }) {
+                        Icon(
+                            imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = "Favorite Button"
+                        )
+                    }
+                }
             )
         }
     ) {
-        drink?.let {
-            CocktailDetailContent(drink = it)
+        when (viewState) {
+            is CocktailDetailsViewState.Content -> {
+                CocktailDetailContent(drink = viewState.data)
+            }
+            is CocktailDetailsViewState.Error -> {
+                Text(text = viewState.message)
+            }
+            CocktailDetailsViewState.Loading -> {
+                CircularProgressIndicator()
+            }
         }
     }
 }
 
 @Composable
-fun CocktailDetailContent(drink: Drink){
-    val painter = rememberCoilPainter(drink.drinkThumb ?: R.drawable.ic_baseline_local_drink_24)
+fun CocktailDetailContentSpacer() {
+    Spacer(modifier = Modifier.height(8.dp))
+}
+
+@Composable
+fun CocktailDetailsSectionHeader(text: String) {
+    Text(text = text, style = MaterialTheme.typography.h5)
+}
+
+@Composable
+fun TagChip(text: String) {
+    Surface(
+        shape = MaterialTheme.shapes.small,
+        modifier = Modifier
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colors.onSurface
+            )
+            .padding(8.dp, 4.dp)
+    ) {
+        Text(text = text)
+    }
+}
+
+@Composable
+fun CocktailDetailContent(drink: CocktailDetailsDisplayModel) {
+    val painter = rememberCoilPainter(drink.image ?: R.drawable.ic_baseline_local_drink_24)
 
     LazyColumn {
-        item{
+        item {
             Image(
                 painter = painter,
                 contentScale = ContentScale.Crop,
-                contentDescription = "${drink.drink} image",
+                contentDescription = "${drink.name} image",
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp)
@@ -60,7 +109,54 @@ fun CocktailDetailContent(drink: Drink){
         }
 
         item {
-            Text(text = drink.instructions)
+            Column(modifier = Modifier.padding(16.dp)) {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                    items(drink.chips) {
+                        TagChip(it)
+                    }
+                }
+
+                CocktailDetailContentSpacer()
+
+                if (drink.altName != null) {
+                    CocktailDetailsSectionHeader(text = "A.K.A.")
+                    Text(
+                        text = drink.altName,
+                        style = MaterialTheme.typography.body1,
+                        modifier = Modifier.padding(8.dp)
+                    )
+
+                    CocktailDetailContentSpacer()
+                }
+
+
+                CocktailDetailsSectionHeader(text = "Glassware")
+                Text(
+                    text = drink.glassware ?: "Bartender's Choice",
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(8.dp)
+                )
+
+                CocktailDetailContentSpacer()
+
+                CocktailDetailsSectionHeader(text = "Ingredients")
+                Column(modifier = Modifier.padding(8.dp)) {
+                    drink.ingredients.map {
+                        Text(text = it.toString(), style = MaterialTheme.typography.body1)
+                    }
+                }
+
+                CocktailDetailContentSpacer()
+
+                CocktailDetailsSectionHeader(text = "Instructions")
+
+                Text(
+                    text = drink.instructions,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
         }
     }
 }
+
