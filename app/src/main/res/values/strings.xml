@@ -8,4 +8,5 @@
     <string name="add_ingredient">Add Ingredient</string>
     <string name="navigate_back">Navigate back</string>
     <string name="no_results_found">No results found</string>
+    <string name="type_to_filter">Type to filter</string>
 </resources>

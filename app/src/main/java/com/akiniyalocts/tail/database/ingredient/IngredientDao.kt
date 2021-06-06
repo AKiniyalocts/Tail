@@ -1,11 +1,14 @@
 package com.akiniyalocts.tail.database.ingredient
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface IngredientDao {
-    @Query("SELECT * FROM LOCALINGREDIENT")
+    @Query("SELECT * FROM LOCALINGREDIENT ORDER BY name")
     fun getIngredients(): Flow<List<LocalIngredient>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -13,5 +16,4 @@ interface IngredientDao {
 
     @Query("DELETE FROM LOCALINGREDIENT")
     suspend fun deleteAllIngredients()
-
 }

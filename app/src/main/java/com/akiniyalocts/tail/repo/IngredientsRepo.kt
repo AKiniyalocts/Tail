@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 interface IngredientsRepo {
     suspend fun saveIngredients(): Result<Boolean>
     val allIngredients : Flow<List<LocalIngredient>>
-
 }
 class IngredientsRepoImp(private val api: CocktailApi, private val ingredientsDao: IngredientDao): IngredientsRepo{
 

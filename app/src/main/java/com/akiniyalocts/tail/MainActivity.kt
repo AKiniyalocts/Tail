@@ -22,8 +22,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.akiniyalocts.tail.ui.addIngredient.AddIngredientScreen
-import com.akiniyalocts.tail.ui.favorites.FavoritesListScreen
 import com.akiniyalocts.tail.ui.cocktailDetail.CocktailDetailScreen
+import com.akiniyalocts.tail.ui.favorites.FavoritesListScreen
 import com.akiniyalocts.tail.ui.home.HomeScreen
 import com.akiniyalocts.tail.ui.ingredients.IngredientsListScreen
 import com.akiniyalocts.tail.ui.theme.TailTheme
