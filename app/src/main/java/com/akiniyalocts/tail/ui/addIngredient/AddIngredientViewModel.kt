@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@FlowPreview
 @HiltViewModel
 class AddIngredientViewModel @Inject constructor(private val ingredientsRepo: IngredientsRepo): ViewModel() {
     val screenState = mutableStateOf(AddIngredientSearchState.Initial)
@@ -30,9 +31,9 @@ class AddIngredientViewModel @Inject constructor(private val ingredientsRepo: In
         }
     }
 
-    @FlowPreview
     private suspend fun observeQuery() {
         query.debounce(300)
+            .distinctUntilChanged()
             .collect {
                 filterForQuery(it)
             }

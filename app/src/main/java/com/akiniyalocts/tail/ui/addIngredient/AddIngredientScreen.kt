@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.SentimentDissatisfied
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -52,6 +53,19 @@ fun AddIngredientScreen(navController: NavController, viewModel: AddIngredientVi
                             Icon(imageVector = Icons.Default.ArrowBack, contentDescription = stringResource(
                                 id = R.string.navigate_back
                             ))
+                        }
+                    },
+                    trailingIcon = {
+                        IconButton(
+                            onClick = {
+                                textState.value = TextFieldValue()
+                                query.value = ""
+                            }
+                        ){
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = stringResource(id = R.string.clear_filter)
+                            )
                         }
                     },
                     modifier = Modifier

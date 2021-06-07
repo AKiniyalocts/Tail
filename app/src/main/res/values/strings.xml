@@ -9,4 +9,5 @@
     <string name="navigate_back">Navigate back</string>
     <string name="no_results_found">No results found</string>
     <string name="type_to_filter">Type to filter</string>
+    <string name="clear_filter">Clear filter</string>
 </resources>
