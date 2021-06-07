@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.akiniyalocts.tail.R
-import com.akiniyalocts.tail.database.ingredient.LocalIngredient
+import com.akiniyalocts.tail.database.localIngredient.LocalIngredient
 
 @Composable
 fun AddIngredientScreen(navController: NavController, viewModel: AddIngredientViewModel = hiltViewModel()){

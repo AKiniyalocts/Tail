@@ -20,7 +20,7 @@ object DatabaseModule {
             app,
             AppDatabase::class.java,
             "tail_db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
 
 
     @Singleton
@@ -30,4 +30,8 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideLocalIngredientsDao(database: AppDatabase) = database.getLocalIngredientsDao()
+
+    @Singleton
+    @Provides
+    fun provideUserIngredientsDao(database: AppDatabase) = database.getUserIngredientsDao()
 }

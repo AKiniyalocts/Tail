@@ -1,5 +1,7 @@
 package com.akiniyalocts.tail.ui.ingredients
 
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -20,7 +22,18 @@ fun IngredientsListScreen(navController: NavController, viewModel: IngredientsVi
             }
         }
     ){
+        UserIngredientsListScreen(viewModel)
+    }
+}
 
+@Composable
+fun UserIngredientsListScreen(viewModel: IngredientsViewModel) {
+    val userIngredients = viewModel.userIngredients
+
+    LazyColumn {
+        items(userIngredients.value){
+            Text(it.name)
+        }
     }
 }
 

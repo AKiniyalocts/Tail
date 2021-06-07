@@ -1,4 +1,4 @@
-package com.akiniyalocts.tail.database.ingredient
+package com.akiniyalocts.tail.database.localIngredient
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -7,7 +7,7 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface IngredientDao {
+interface LocalIngredientDao {
     @Query("SELECT * FROM LOCALINGREDIENT ORDER BY name")
     fun getIngredients(): Flow<List<LocalIngredient>>
 

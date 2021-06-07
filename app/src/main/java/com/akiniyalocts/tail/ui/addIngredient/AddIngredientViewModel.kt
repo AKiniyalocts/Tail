@@ -3,7 +3,7 @@ package com.akiniyalocts.tail.ui.addIngredient
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.akiniyalocts.tail.database.ingredient.LocalIngredient
+import com.akiniyalocts.tail.database.localIngredient.LocalIngredient
 import com.akiniyalocts.tail.repo.IngredientsRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -53,8 +53,15 @@ class AddIngredientViewModel @Inject constructor(private val ingredientsRepo: In
         results.value = start.filter { it.name.contains(query, ignoreCase = true) }
     }
 
-    fun addIngredient(ingredient: LocalIngredient) {
-        //TODO save ingredient to room
+    fun addIngredient(ingredient: LocalIngredient) = viewModelScope.launch{
+        ingredientsRepo.addIngredient(ingredient).fold(
+            {
+                //TODO: show snackbar with undo action
+            },
+            {
+
+            }
+        )
     }
 
 }

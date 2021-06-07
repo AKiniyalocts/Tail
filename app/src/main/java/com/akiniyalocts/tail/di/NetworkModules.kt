@@ -1,7 +1,8 @@
 package com.akiniyalocts.tail.di
 
 import com.akiniyalocts.tail.api.CocktailApi
-import com.akiniyalocts.tail.database.ingredient.IngredientDao
+import com.akiniyalocts.tail.database.localIngredient.LocalIngredientDao
+import com.akiniyalocts.tail.database.userIngredient.UserIngredientDao
 import com.akiniyalocts.tail.repo.IngredientsRepo
 import com.akiniyalocts.tail.repo.IngredientsRepoImp
 import com.akiniyalocts.tail.repo.SearchRepo
@@ -38,6 +39,6 @@ object NetworkModules{
 
     @Singleton
     @Provides
-    fun provideIngredientRepo(api: CocktailApi, dao: IngredientDao): IngredientsRepo = IngredientsRepoImp(api, dao)
+    fun provideIngredientRepo(api: CocktailApi, localIngredientDao: LocalIngredientDao, userIngredientDao: UserIngredientDao): IngredientsRepo = IngredientsRepoImp(api, localIngredientDao, userIngredientDao)
 }
 
