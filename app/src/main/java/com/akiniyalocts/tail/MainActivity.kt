@@ -9,8 +9,10 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.House
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.House
+import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -19,14 +21,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.akiniyalocts.tail.ui.favorites.FavoritesListScreen
+import com.akiniyalocts.tail.ui.addIngredient.AddIngredientScreen
 import com.akiniyalocts.tail.ui.cocktailDetail.CocktailDetailScreen
+import com.akiniyalocts.tail.ui.favorites.FavoritesListScreen
 import com.akiniyalocts.tail.ui.home.HomeScreen
+import com.akiniyalocts.tail.ui.ingredients.IngredientsListScreen
 import com.akiniyalocts.tail.ui.theme.TailTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
 
+@ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @FlowPreview
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -40,21 +47,29 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-sealed class Screen(val route: String, val selectedIcon: ImageVector, val unselectedIcon: ImageVector){
-    object HomeScreen: Screen("Home", Icons.Filled.House, Icons.Outlined.House)
-    object FavoritesScreen: Screen("Favorites", Icons.Filled.Favorite, Icons.Outlined.FavoriteBorder)
+sealed class TopLevelScreen(val route: String, val selectedIcon: ImageVector, val unselectedIcon: ImageVector){
+    object HomeScreen: TopLevelScreen("Home", Icons.Filled.House, Icons.Outlined.House)
+    object FavoritesScreen: TopLevelScreen("Favorites", Icons.Filled.Favorite, Icons.Outlined.FavoriteBorder)
+    object Ingredients: TopLevelScreen("Ingredients", Icons.Filled.ShoppingCart, Icons.Outlined.ShoppingCart)
+}
+
+sealed class Screen(val route: String){
+    object AddIngredientScreen: Screen("AddIngredient")
 }
 
 object DeepLinkScreen {
     const val drinkIdArg: String = "drinkId"
 }
 
+@FlowPreview
+@ExperimentalMaterialApi
 @Composable
 fun TailBottomNavigation(){
     val navController = rememberNavController()
     val bottomNavItems = listOf(
-        Screen.HomeScreen,
-        Screen.FavoritesScreen
+        TopLevelScreen.HomeScreen,
+        TopLevelScreen.FavoritesScreen,
+        TopLevelScreen.Ingredients
     )
     Scaffold (
         bottomBar = {
@@ -99,10 +114,12 @@ fun TailBottomNavigation(){
         TailNavHost(navController = navController, it)
     }
 }
+@FlowPreview
+@ExperimentalMaterialApi
 @Composable
 fun TailNavHost(navController: NavHostController, paddingValues: PaddingValues) {
-    NavHost(navController = navController, startDestination = Screen.HomeScreen.route, modifier = Modifier.padding(paddingValues)){
-        composable(Screen.HomeScreen.route){
+    NavHost(navController = navController, startDestination = TopLevelScreen.HomeScreen.route, modifier = Modifier.padding(paddingValues)){
+        composable(TopLevelScreen.HomeScreen.route){
             HomeScreen(navController)
         }
 
@@ -110,8 +127,13 @@ fun TailNavHost(navController: NavHostController, paddingValues: PaddingValues) 
             CocktailDetailScreen(it.arguments?.getString(DeepLinkScreen.drinkIdArg))
         }
 
-        composable(Screen.FavoritesScreen.route){
+        composable(TopLevelScreen.FavoritesScreen.route){
             FavoritesListScreen(navController = navController)
         }
+
+        composable(TopLevelScreen.Ingredients.route){
+            IngredientsListScreen(navController = navController)
+        }
+
     }
 }

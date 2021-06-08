@@ -19,5 +19,7 @@ interface CocktailApi {
     @GET("api/json/v2/{apiKey}/lookup.php")
     suspend fun getCocktail(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey, @Query("i") id: String): Response<DrinksResponse>
 
+    @GET("api/json/v2/{apiKey}/list.php?i=list")
+    suspend fun getAllIngredients(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey): Response<IngredientsResponse>
 
 }

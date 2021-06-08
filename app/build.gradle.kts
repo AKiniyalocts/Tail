@@ -19,6 +19,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
     }
 
     buildTypes {
@@ -51,6 +57,9 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
+    }
+    kapt {
+        generateStubs = true
     }
 }
 
@@ -97,7 +106,7 @@ dependencies {
     kapt ("com.google.dagger:hilt-android-compiler:2.35")
     implementation ("androidx.hilt:hilt-navigation-compose:1.0.0-alpha02")
 
-    val roomVersion = "2.3.0"
+    val roomVersion = "2.4.0-alpha01"
     implementation("androidx.room:room-runtime:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")

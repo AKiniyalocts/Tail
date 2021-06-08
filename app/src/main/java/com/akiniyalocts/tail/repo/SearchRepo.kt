@@ -3,6 +3,7 @@ package com.akiniyalocts.tail.repo
 import com.akiniyalocts.tail.api.Category
 import com.akiniyalocts.tail.api.CocktailApi
 import com.akiniyalocts.tail.api.model.Drink
+import com.akiniyalocts.tail.api.model.Ingredient
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
@@ -11,6 +12,7 @@ interface SearchRepo {
     suspend fun getPopularCocktails(): Result<List<Drink>>
     suspend fun getCategories(): Result<List<Category>>
     suspend fun getDrink(id: String): Result<Drink>
+    suspend fun getIngredients(name: String): Result<List<Ingredient>>
 }
 class SearchRepoImp(private val api: CocktailApi, private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO): SearchRepo{
     override suspend fun searchCocktails(query: String): Result<List<Drink>> {
@@ -47,5 +49,11 @@ class SearchRepoImp(private val api: CocktailApi, private val coroutineDispatche
         }
     }
 
-
+    override suspend fun getIngredients(name: String): Result<List<Ingredient>> {
+        return try {
+           Result.success(emptyList())
+        }catch (e: Exception){
+            Result.failure(e)
+        }
+    }
 }
