@@ -11,4 +11,5 @@
     <string name="type_to_filter">Type to filter</string>
     <string name="clear_filter">Clear filter</string>
     <string name="add_new_ingredient">Add a new ingredient</string>
+    <string name="undo">Undo</string>
 </resources>

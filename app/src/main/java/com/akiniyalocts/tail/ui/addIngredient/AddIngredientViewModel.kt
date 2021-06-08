@@ -53,14 +53,11 @@ class AddIngredientViewModel @Inject constructor(private val ingredientsRepo: In
     }
 
     fun addIngredient(ingredient: LocalIngredient) = viewModelScope.launch{
-        ingredientsRepo.addIngredient(ingredient).fold(
-            {
-                //TODO: show snackbar with undo action
-            },
-            {
+        ingredientsRepo.addIngredient(ingredient)
+    }
 
-            }
-        )
+    fun removeIngredient(removeIngredient: LocalIngredient) = viewModelScope.launch {
+        ingredientsRepo.deleteIngredient(removeIngredient)
     }
 
 }

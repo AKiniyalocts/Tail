@@ -121,7 +121,19 @@ fun AddIngredientScreen(
                 AddIngredientSearchState.Success -> {
                     IngredientsList(ingredients.value) {
                         viewModel.addIngredient(it)
-                        //TODO: show snackbar to "undo" adding ingredient. Aka delete added ingredient
+                        coroutineScope.launch {
+                            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+                                message = "Ingredient added",
+                                actionLabel = "Undo"
+                            )
+
+                            when(snackbarResult){
+                                SnackbarResult.ActionPerformed -> {
+                                    viewModel.removeIngredient(it)
+                                }
+                                else -> {}
+                            }
+                        }
                     }
                 }
                 AddIngredientSearchState.Fail -> {

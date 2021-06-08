@@ -11,7 +11,7 @@ import com.akiniyalocts.tail.database.userIngredient.UserIngredientDao
 
 @Database(
     entities = [FavoriteDrink::class,  LocalIngredient::class, UserIngredient::class],
-    version = 3,
+    version = 4,
     exportSchema = true
 )
 abstract class AppDatabase: RoomDatabase() {

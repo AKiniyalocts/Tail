@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 interface IngredientsRepo {
     suspend fun saveIngredients(): Result<Boolean>
     suspend fun addIngredient(ingredient: LocalIngredient): Result<Unit>
+    suspend fun deleteIngredient(removeIngredient: LocalIngredient): Result<Unit>
+
     val userIngredientsFlow: Flow<List<UserIngredient>>
 
     val allIngredients : Flow<List<LocalIngredient>>
@@ -47,6 +49,15 @@ class IngredientsRepoImp(private val api: CocktailApi, private val ingredientsDa
     override suspend fun addIngredient(ingredient: LocalIngredient): Result<Unit> {
         return try {
             userIngredientsDao.addUserIngredient(ingredient.toUserIngredient())
+            Result.success(Unit)
+        }catch (e: Exception){
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun deleteIngredient(removeIngredient: LocalIngredient): Result<Unit> {
+        return try {
+            userIngredientsDao.removeUserIngredientByName(removeIngredient.name)
             Result.success(Unit)
         }catch (e: Exception){
             Result.failure(e)
