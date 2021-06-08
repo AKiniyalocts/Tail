@@ -8,12 +8,11 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.SentimentDissatisfied
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -24,36 +23,63 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.akiniyalocts.tail.R
 import com.akiniyalocts.tail.database.localIngredient.LocalIngredient
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.launch
 
+@ExperimentalMaterialApi
+@FlowPreview
 @Composable
-fun AddIngredientScreen(navController: NavController, viewModel: AddIngredientViewModel = hiltViewModel()){
+fun AddIngredientScreen(
+    scaffoldState: BottomSheetScaffoldState,
+    viewModel: AddIngredientViewModel = hiltViewModel()
+){
 
     val focusManager = LocalFocusManager.current
     val state = viewModel.screenState.value
     val ingredients = viewModel.results
     val query = viewModel.query
     val textState = remember{ mutableStateOf(TextFieldValue()) }
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
+            TopAppBar(
+                navigationIcon = {
+                        IconButton(
+                            onClick = {
+                                coroutineScope.launch {
+                                    when {
+                                        scaffoldState.bottomSheetState.isCollapsed -> scaffoldState.bottomSheetState.expand()
+                                        scaffoldState.bottomSheetState.isExpanded -> scaffoldState.bottomSheetState.collapse()
+                                    }
+                                }
+                            }
+                        ) {
+                            Icon(
+                                imageVector = if(scaffoldState.bottomSheetState.isCollapsed) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                contentDescription = "expand"
+                            )
+                        }
+                },
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.add_new_ingredient),
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            )
+        }
+    ) {
+
+        Column {
             Row(Modifier.fillMaxWidth()) {
                 OutlinedTextField(
                     value = textState.value,
                     onValueChange = {
                         textState.value = it
                         query.value = it.text
-                    },
-                    leadingIcon = {
-                        IconButton(onClick = {
-                            navController.popBackStack()
-                        }) {
-                            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = stringResource(
-                                id = R.string.navigate_back
-                            ))
-                        }
                     },
                     trailingIcon = {
                         IconButton(
@@ -82,29 +108,34 @@ fun AddIngredientScreen(navController: NavController, viewModel: AddIngredientVi
                     }
                 )
             }
-        }
-    ) {
-        when(state){
-            AddIngredientSearchState.Initial -> { }
-            AddIngredientSearchState.Loading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-                    CircularProgressIndicator()
+
+
+            when (state) {
+                AddIngredientSearchState.Initial -> {
                 }
-            }
-            AddIngredientSearchState.Success -> {
-                IngredientsList(ingredients.value){
-                    viewModel.addIngredient(it)
-                    //TODO: show snackbar to "undo" adding ingredient. Aka delete added ingredient
+                AddIngredientSearchState.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
                 }
-            }
-            AddIngredientSearchState.Fail -> {
-                //TODO: show failure, retry button?
-            }
-            AddIngredientSearchState.Empty -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-                    Row {
-                        Icon(imageVector = Icons.Default.SentimentDissatisfied, contentDescription = null)
-                        Text(stringResource(id = R.string.no_results_found))
+                AddIngredientSearchState.Success -> {
+                    IngredientsList(ingredients.value) {
+                        viewModel.addIngredient(it)
+                        //TODO: show snackbar to "undo" adding ingredient. Aka delete added ingredient
+                    }
+                }
+                AddIngredientSearchState.Fail -> {
+                    //TODO: show failure, retry button?
+                }
+                AddIngredientSearchState.Empty -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Row {
+                            Icon(
+                                imageVector = Icons.Default.SentimentDissatisfied,
+                                contentDescription = null
+                            )
+                            Text(stringResource(id = R.string.no_results_found))
+                        }
                     }
                 }
             }

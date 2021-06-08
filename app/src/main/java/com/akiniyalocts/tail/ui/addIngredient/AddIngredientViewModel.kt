@@ -18,7 +18,6 @@ class AddIngredientViewModel @Inject constructor(private val ingredientsRepo: In
     val query = MutableStateFlow("")
     val results = mutableStateOf<List<LocalIngredient>>(emptyList())
 
-    //TODO: filter all ingredients against user's saved ingredients and indicate with flag on LocalIngredient that item is marked
     private val allIngredients = ingredientsRepo.allIngredients.map {
         screenState.value = AddIngredientSearchState.Success
         it

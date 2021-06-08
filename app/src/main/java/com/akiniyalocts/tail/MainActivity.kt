@@ -28,9 +28,12 @@ import com.akiniyalocts.tail.ui.home.HomeScreen
 import com.akiniyalocts.tail.ui.ingredients.IngredientsListScreen
 import com.akiniyalocts.tail.ui.theme.TailTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
 
+@ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @FlowPreview
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -58,6 +61,8 @@ object DeepLinkScreen {
     const val drinkIdArg: String = "drinkId"
 }
 
+@FlowPreview
+@ExperimentalMaterialApi
 @Composable
 fun TailBottomNavigation(){
     val navController = rememberNavController()
@@ -109,6 +114,8 @@ fun TailBottomNavigation(){
         TailNavHost(navController = navController, it)
     }
 }
+@FlowPreview
+@ExperimentalMaterialApi
 @Composable
 fun TailNavHost(navController: NavHostController, paddingValues: PaddingValues) {
     NavHost(navController = navController, startDestination = TopLevelScreen.HomeScreen.route, modifier = Modifier.padding(paddingValues)){
@@ -126,10 +133,6 @@ fun TailNavHost(navController: NavHostController, paddingValues: PaddingValues) 
 
         composable(TopLevelScreen.Ingredients.route){
             IngredientsListScreen(navController = navController)
-        }
-
-        composable(Screen.AddIngredientScreen.route){
-            AddIngredientScreen(navController = navController)
         }
 
     }
