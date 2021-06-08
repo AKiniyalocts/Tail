@@ -12,6 +12,7 @@ interface IngredientsRepo {
     suspend fun saveIngredients(): Result<Boolean>
     suspend fun addIngredient(ingredient: LocalIngredient): Result<Unit>
     suspend fun deleteIngredient(removeIngredient: LocalIngredient): Result<Unit>
+    suspend fun deleteIngredient(removeIngredient: UserIngredient): Result<Unit>
 
     val userIngredientsFlow: Flow<List<UserIngredient>>
 
@@ -56,6 +57,15 @@ class IngredientsRepoImp(private val api: CocktailApi, private val ingredientsDa
     }
 
     override suspend fun deleteIngredient(removeIngredient: LocalIngredient): Result<Unit> {
+        return try {
+            userIngredientsDao.removeUserIngredientByName(removeIngredient.name)
+            Result.success(Unit)
+        }catch (e: Exception){
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun deleteIngredient(removeIngredient: UserIngredient): Result<Unit> {
         return try {
             userIngredientsDao.removeUserIngredientByName(removeIngredient.name)
             Result.success(Unit)
