@@ -3,6 +3,7 @@ package com.akiniyalocts.tail.ui.ingredients
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.akiniyalocts.tail.api.model.MixerDrink
 import com.akiniyalocts.tail.database.userIngredient.UserIngredient
 import com.akiniyalocts.tail.repo.IngredientsRepo
 import com.akiniyalocts.tail.repo.SearchRepo
@@ -17,6 +18,7 @@ class IngredientsViewModel @Inject constructor(private val ingredientsRepo: Ingr
 
     val screenState = mutableStateOf<IngredientsListScreenState>(IngredientsListScreenState.Loading)
     val selectedMixers = mutableStateOf( mutableSetOf<String>())
+    val foundMixers = mutableStateOf(listOf<MixerDrink>())
 
     init {
         viewModelScope.launch {
@@ -38,6 +40,7 @@ class IngredientsViewModel @Inject constructor(private val ingredientsRepo: Ingr
             add(ingredient.name)
         }
         selectedMixers.value = updated
+        getDrinksForMixers()
     }
 
     fun removeMixer(mixer: String) {
@@ -45,16 +48,27 @@ class IngredientsViewModel @Inject constructor(private val ingredientsRepo: Ingr
             remove(mixer)
         }
         selectedMixers.value = updated
+        // clear out
+        if(updated.isEmpty()){
+            foundMixers.value = emptyList()
+        }else {
+           getDrinksForMixers()
+        }
     }
 
     fun getDrinksForMixers() = viewModelScope.launch{
         searchRepo.getDrinksForMixers(selectedMixers.value).fold(
             {
-
+                foundMixers.value = it
             },
             {
                 it.printStackTrace()
             }
         )
+    }
+
+    fun clearMixers() {
+        selectedMixers.value = mutableSetOf()
+        foundMixers.value = mutableListOf()
     }
 }

@@ -3,6 +3,7 @@ package com.akiniyalocts.tail
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -21,7 +22,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.akiniyalocts.tail.ui.addIngredient.AddIngredientScreen
 import com.akiniyalocts.tail.ui.cocktailDetail.CocktailDetailScreen
 import com.akiniyalocts.tail.ui.favorites.FavoritesListScreen
 import com.akiniyalocts.tail.ui.home.HomeScreen
@@ -33,6 +33,7 @@ import kotlinx.coroutines.FlowPreview
 @ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @ExperimentalAnimationApi
     @FlowPreview
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +62,7 @@ object DeepLinkScreen {
     const val drinkIdArg: String = "drinkId"
 }
 
+@ExperimentalAnimationApi
 @FlowPreview
 @ExperimentalMaterialApi
 @Composable
@@ -114,6 +116,7 @@ fun TailBottomNavigation(){
         TailNavHost(navController = navController, it)
     }
 }
+@ExperimentalAnimationApi
 @FlowPreview
 @ExperimentalMaterialApi
 @Composable

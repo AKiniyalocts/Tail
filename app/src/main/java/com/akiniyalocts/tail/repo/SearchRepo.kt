@@ -2,7 +2,6 @@ package com.akiniyalocts.tail.repo
 
 import com.akiniyalocts.tail.api.Category
 import com.akiniyalocts.tail.api.CocktailApi
-import com.akiniyalocts.tail.api.MixerDrinkResponse
 import com.akiniyalocts.tail.api.model.Drink
 import com.akiniyalocts.tail.api.model.Ingredient
 import com.akiniyalocts.tail.api.model.MixerDrink

@@ -1,8 +1,8 @@
 package com.akiniyalocts.tail.repo
 
 import com.akiniyalocts.tail.api.CocktailApi
-import com.akiniyalocts.tail.database.localIngredient.LocalIngredientDao
 import com.akiniyalocts.tail.database.localIngredient.LocalIngredient
+import com.akiniyalocts.tail.database.localIngredient.LocalIngredientDao
 import com.akiniyalocts.tail.database.userIngredient.UserIngredient
 import com.akiniyalocts.tail.database.userIngredient.UserIngredientDao
 import kotlinx.coroutines.flow.Flow
