@@ -76,10 +76,10 @@ fun CocktailDetailsSectionHeader(text: String) {
 }
 
 @Composable
-fun TagChip(text: String) {
+fun TagChip(text: String, modifier: Modifier = Modifier) {
     Surface(
         shape = MaterialTheme.shapes.small,
-        modifier = Modifier
+        modifier = modifier
             .border(
                 width = 1.dp,
                 color = MaterialTheme.colors.onSurface

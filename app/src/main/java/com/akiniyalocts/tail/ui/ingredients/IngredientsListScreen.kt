@@ -1,22 +1,23 @@
 package com.akiniyalocts.tail.ui.ingredients
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.LocalDrink
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.AddShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +28,7 @@ import androidx.navigation.NavController
 import com.akiniyalocts.tail.R
 import com.akiniyalocts.tail.database.userIngredient.UserIngredient
 import com.akiniyalocts.tail.ui.addIngredient.AddIngredientScreen
+import com.akiniyalocts.tail.ui.cocktailDetail.TagChip
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
 
@@ -70,16 +72,57 @@ fun IngredientsListScreen(navController: NavController, viewModel: IngredientsVi
 @Composable
 fun UserIngredientsListScreen(viewModel: IngredientsViewModel, onAddNewIngredient: () -> Unit) {
     val state = viewModel.screenState
+    val mixerItems = viewModel.selectedMixers
 
     when(val screenState = state.value){
        is IngredientsListScreenState.Success -> {
-           LazyColumn {
-               items(screenState.items){
-                   UserIngredientItem(it){
-                        viewModel.removeIngredient(it)
+
+           Column(){
+               Row(
+                   Modifier
+                       .fillMaxWidth()
+                       .background(color = MaterialTheme.colors.surface)
+                       .animateContentSize()
+               ) {
+                   LazyRow(Modifier.weight(1f).align(CenterVertically)) {
+                       items(mixerItems.value.toList()) {
+                           Spacer(Modifier.padding(4.dp))
+                           TagChip(
+                               text = it,
+                               modifier = Modifier.clickable {
+                                    viewModel.removeMixer(it)
+                                }
+                           )
+                           Spacer(Modifier.padding(4.dp))
+                       }
+                   }
+                   if(mixerItems.value.isNotEmpty()) {
+                       IconButton(
+                           onClick = {
+                               //TODO: mixer search
+                           },
+                           modifier = Modifier.padding(end = 16.dp)
+                       ) {
+                           Icon(imageVector = Icons.Default.Search, null)
+                       }
+                   }
+               }
+
+
+               LazyColumn {
+                   items(screenState.items) {
+                       UserIngredientItem(
+                           it,
+                           onAddMixer = {
+                               viewModel.addMixer(it)
+                           }
+                       ) {
+                           viewModel.removeIngredient(it)
+                       }
                    }
                }
            }
+
        }
         IngredientsListScreenState.Empty -> {
             UserIngredientEmptyState(onAddNewIngredient)
@@ -116,7 +159,11 @@ fun UserIngredientEmptyState(onAddNewIngredient: () -> Unit) {
 }
 
 @Composable
-fun UserIngredientItem(ingredient: UserIngredient, onRemoveIngredient: (UserIngredient) -> (Unit)) {
+fun UserIngredientItem(
+    ingredient: UserIngredient,
+    onAddMixer: (UserIngredient) -> Unit,
+    onRemoveIngredient: (UserIngredient) -> Unit
+) {
     val expanded = remember {
         mutableStateOf(false)
     }
@@ -133,13 +180,13 @@ fun UserIngredientItem(ingredient: UserIngredient, onRemoveIngredient: (UserIngr
             )
             IconButton(
                 onClick = {
-                    expanded.value = !expanded.value
+                    onAddMixer(ingredient)
                 },
                 modifier = Modifier.padding(end = 12.dp)
             ) {
                 Icon(
-                    imageVector = if (expanded.value) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                    contentDescription = "Expand"
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add to mixer"
                 )
             }
         }
