@@ -1,20 +1,17 @@
 package com.akiniyalocts.tail.ui.ingredients
 
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.LocalDrink
+import androidx.compose.material.icons.filled.PlaylistAdd
 import androidx.compose.material.icons.outlined.AddShoppingCart
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,11 +22,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.akiniyalocts.tail.R
+import com.akiniyalocts.tail.api.model.MixerDrink
 import com.akiniyalocts.tail.database.userIngredient.UserIngredient
 import com.akiniyalocts.tail.ui.addIngredient.AddIngredientScreen
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
 
+@ExperimentalAnimationApi
 @FlowPreview
 @ExperimentalMaterialApi
 @Composable
@@ -58,28 +57,64 @@ fun IngredientsListScreen(navController: NavController, viewModel: IngredientsVi
         },
         sheetShape = RoundedCornerShape(12.dp)
     ){
-        UserIngredientsListScreen(viewModel){
-            coroutineScope.launch {
-                scaffoldState.bottomSheetState.expand()
+        UserIngredientsListScreen(
+            viewModel,
+            it,
+            onAddNewIngredient = {
+                coroutineScope.launch {
+                    scaffoldState.bottomSheetState.expand()
+                }
+            },
+            onNavigateToDrinkDetail = {
+                navController.navigate("drink/${it.id}")
             }
-        }
+        )
     }
 }
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
-fun UserIngredientsListScreen(viewModel: IngredientsViewModel, onAddNewIngredient: () -> Unit) {
+fun UserIngredientsListScreen(
+    viewModel: IngredientsViewModel,
+    paddingValues: PaddingValues,
+    onAddNewIngredient: () -> Unit,
+    onNavigateToDrinkDetail: (MixerDrink) -> Unit
+) {
     val state = viewModel.screenState
+    val mixerItems = viewModel.selectedMixers
+    val foundMixers = viewModel.foundMixers
 
     when(val screenState = state.value){
        is IngredientsListScreenState.Success -> {
-           LazyColumn {
-               items(screenState.items){
-                   UserIngredientItem(it){
-                        viewModel.removeIngredient(it)
+
+           Column {
+
+               MixerChipGroup(
+                   mixers = mixerItems.value,
+                   onRemoveMixer = {
+                       viewModel.removeMixer(it)
+                   }
+               ){
+                   viewModel.clearMixers()
+               }
+               InlineMixerDrinks(foundMixers.value, mixerItems.value, onNavigateToDrinkDetail)
+
+               LazyColumn(Modifier.padding(paddingValues)) {
+                   items(screenState.items) {
+                       UserIngredientItem(
+                           it,
+                           onAddMixer = {
+                               viewModel.addMixer(it)
+                           },
+                           onRemoveIngredient = {
+                               viewModel.removeIngredient(it)
+                           }
+                       )
                    }
                }
            }
+
        }
         IngredientsListScreenState.Empty -> {
             UserIngredientEmptyState(onAddNewIngredient)
@@ -90,7 +125,6 @@ fun UserIngredientsListScreen(viewModel: IngredientsViewModel, onAddNewIngredien
             }
         }
     }
-
 }
 
 @Composable
@@ -115,13 +149,17 @@ fun UserIngredientEmptyState(onAddNewIngredient: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun UserIngredientItem(ingredient: UserIngredient, onRemoveIngredient: (UserIngredient) -> (Unit)) {
-    val expanded = remember {
-        mutableStateOf(false)
-    }
+fun UserIngredientItem(
+    ingredient: UserIngredient,
+    onAddMixer: (UserIngredient) -> Unit,
+    onRemoveIngredient: (UserIngredient) -> Unit
+) {
 
-    Column(Modifier.animateContentSize()) {
+    Column(Modifier.combinedClickable( onClick = {}, onLongClick = {
+        onRemoveIngredient(ingredient)
+    })) {
         Row(
             Modifier.padding(top = 12.dp, bottom = 12.dp, start = 16.dp, end = 16.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -133,39 +171,14 @@ fun UserIngredientItem(ingredient: UserIngredient, onRemoveIngredient: (UserIngr
             )
             IconButton(
                 onClick = {
-                    expanded.value = !expanded.value
+                    onAddMixer(ingredient)
                 },
                 modifier = Modifier.padding(end = 12.dp)
             ) {
                 Icon(
-                    imageVector = if (expanded.value) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                    contentDescription = "Expand"
+                    imageVector = Icons.Default.PlaylistAdd,
+                    contentDescription = "Add to mixer"
                 )
-            }
-        }
-        if(expanded.value){
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                OutlinedButton(
-                    onClick = {
-
-                    },
-                    modifier = Modifier.padding(top = 12.dp, bottom = 12.dp)
-                ) {
-                    Icon(imageVector = Icons.Default.LocalDrink, contentDescription = null)
-                    Text(
-                        text = stringResource(id = R.string.mix_a_drink),
-                        Modifier.padding(start = 8.dp)
-                    )
-                }
-                Spacer(modifier = Modifier.padding(12.dp))
-                IconButton(onClick = {
-                    onRemoveIngredient(ingredient)
-                }) {
-                    Icon(imageVector = Icons.Default.Delete, contentDescription = stringResource(id = R.string.remove_ingredient))
-                }
             }
         }
         Divider()

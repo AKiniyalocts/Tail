@@ -10,10 +10,11 @@
     <string name="no_results_found">No results found</string>
     <string name="type_to_filter">Type to filter</string>
     <string name="clear_filter">Clear filter</string>
-    <string name="add_new_ingredient">Add a new ingredient</string>
+    <string name="add_new_ingredient">Store a new ingredient</string>
     <string name="undo">Undo</string>
     <string name="add_some_ingredients">Add ingredients</string>
     <string name="title_your_ingredients">Your Ingredients</string>
     <string name="mix_a_drink">Mix a drink</string>
     <string name="remove_ingredient">Remove ingredient</string>
+    <string name="mixer_search">Mixer Search</string>
 </resources>

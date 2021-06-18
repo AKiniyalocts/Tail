@@ -22,4 +22,6 @@ interface CocktailApi {
     @GET("api/json/v2/{apiKey}/list.php?i=list")
     suspend fun getAllIngredients(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey): Response<IngredientsResponse>
 
+    @GET("api/json/v2/{apiKey}/filter.php?i=Dry_Vermouth,Gin,Anis")
+    suspend fun getDrinksWithMixers(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey, @Query("i") mixers: String): Response<MixerDrinkResponse>
 }

@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -76,17 +77,20 @@ fun CocktailDetailsSectionHeader(text: String) {
 }
 
 @Composable
-fun TagChip(text: String) {
+fun TagChip(text: String, modifier: Modifier = Modifier) {
     Surface(
         shape = MaterialTheme.shapes.small,
-        modifier = Modifier
+        color = Color.Transparent,
+        modifier = modifier
             .border(
                 width = 1.dp,
                 color = MaterialTheme.colors.onSurface
             )
             .padding(8.dp, 4.dp)
     ) {
-        Text(text = text)
+        Text(
+            text = text
+        )
     }
 }
 
