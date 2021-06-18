@@ -93,18 +93,21 @@ dependencies {
     implementation ("androidx.appcompat:appcompat:1.3.0")
     implementation ("androidx.activity:activity-ktx:1.2.3")
     implementation ("androidx.core:core-ktx:1.6.0-alpha02")
-    implementation ("androidx.activity:activity-compose:1.3.0-alpha08")
+    implementation ("androidx.activity:activity-compose:1.3.0-beta02")
 
     implementation ("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha05")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07")
 
-    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha01")
-    implementation ("com.google.accompanist:accompanist-coil:0.10.0")
+    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha03")
+
+    val accompanistVersion = "0.12.0"
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
+    implementation ("com.google.accompanist:accompanist-coil:$accompanistVersion")
 
     implementation ("com.google.dagger:hilt-android:2.35")
     kapt ("com.google.dagger:hilt-android-compiler:2.35")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0-alpha02")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0-alpha03")
 
     val roomVersion = "2.4.0-alpha01"
     implementation("androidx.room:room-runtime:$roomVersion")
@@ -116,7 +119,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-scalars:$retrofitVersion")
 
-    val moshiVersion = "1.9.3"
+    val moshiVersion = "1.12.0"
     implementation("com.squareup.moshi:moshi:$moshiVersion")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
 
