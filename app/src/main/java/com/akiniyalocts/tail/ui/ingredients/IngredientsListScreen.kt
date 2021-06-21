@@ -41,7 +41,7 @@ fun IngredientsListScreen(navController: NavController, viewModel: IngredientsVi
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(id = R.string.title_your_ingredients),
+                        text = stringResource(id = R.string.title_stored_ingredients),
                         fontWeight = FontWeight.Black,
                         fontSize = 24.sp
                     )
@@ -157,9 +157,16 @@ fun UserIngredientItem(
     onRemoveIngredient: (UserIngredient) -> Unit
 ) {
 
-    Column(Modifier.combinedClickable( onClick = {}, onLongClick = {
-        onRemoveIngredient(ingredient)
-    })) {
+    Column(
+        Modifier.combinedClickable(
+            onClick = {
+
+            },
+            onLongClick = {
+                onRemoveIngredient(ingredient)
+            }
+        )
+    ) {
         Row(
             Modifier.padding(top = 12.dp, bottom = 12.dp, start = 16.dp, end = 16.dp),
             verticalAlignment = Alignment.CenterVertically

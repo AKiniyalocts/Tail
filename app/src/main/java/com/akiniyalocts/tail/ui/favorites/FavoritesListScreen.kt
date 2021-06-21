@@ -52,7 +52,9 @@ fun FavoritesListScreen(navController: NavController, viewModel: FavoritesViewMo
         if(favorites.value.isNotEmpty()) {
             LazyColumn {
                 items(favorites.value) {
-                    FavoriteDrinkListItem(drink = it)
+                    FavoriteDrinkListItem(drink = it){
+                        navController.navigate("drink/${it.id}")
+                    }
                 }
             }
         }else{
@@ -63,7 +65,7 @@ fun FavoritesListScreen(navController: NavController, viewModel: FavoritesViewMo
 
 
 @Composable
-fun FavoriteDrinkListItem(drink: FavoriteDrink){
+fun FavoriteDrinkListItem(drink: FavoriteDrink, onFavoriteClicked: (FavoriteDrink) -> Unit){
     val expanded = remember {
         mutableStateOf(false)
     }
@@ -84,7 +86,7 @@ fun FavoriteDrinkListItem(drink: FavoriteDrink){
                 RoundedCornerShape(8.dp)
             )
             .clickable {
-
+                onFavoriteClicked(drink)
             }
     ) {
         Column(

@@ -139,7 +139,7 @@ fun AddIngredientScreen(
                     }
                 }
                 AddIngredientSearchState.Fail -> {
-                    //TODO: show failure, retry button?
+
                 }
                 AddIngredientSearchState.Empty -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

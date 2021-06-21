@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-// TODO: Leverage AsyncState
+
 sealed class CocktailDetailsViewState {
     object Loading : CocktailDetailsViewState()
     data class Content(val data: CocktailDetailsDisplayModel) : CocktailDetailsViewState()

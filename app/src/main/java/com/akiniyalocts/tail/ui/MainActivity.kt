@@ -1,4 +1,4 @@
-package com.akiniyalocts.tail
+package com.akiniyalocts.tail.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -52,10 +52,6 @@ sealed class TopLevelScreen(val route: String, val selectedIcon: ImageVector, va
     object HomeScreen: TopLevelScreen("Home", Icons.Filled.House, Icons.Outlined.House)
     object FavoritesScreen: TopLevelScreen("Favorites", Icons.Filled.Favorite, Icons.Outlined.FavoriteBorder)
     object Ingredients: TopLevelScreen("Ingredients", Icons.Filled.ShoppingCart, Icons.Outlined.ShoppingCart)
-}
-
-sealed class Screen(val route: String){
-    object AddIngredientScreen: Screen("AddIngredient")
 }
 
 object DeepLinkScreen {
@@ -127,7 +123,7 @@ fun TailNavHost(navController: NavHostController, paddingValues: PaddingValues) 
         }
 
         composable("drink/{drinkId}"){
-            CocktailDetailScreen(it.arguments?.getString(DeepLinkScreen.drinkIdArg))
+            CocktailDetailScreen(navController, it.arguments?.getString(DeepLinkScreen.drinkIdArg))
         }
 
         composable(TopLevelScreen.FavoritesScreen.route){

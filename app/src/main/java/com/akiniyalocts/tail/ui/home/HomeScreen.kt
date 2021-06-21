@@ -15,12 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.akiniyalocts.tail.R
+import com.akiniyalocts.tail.ui.TopLevelScreen
+import com.akiniyalocts.tail.api.Category
 import com.akiniyalocts.tail.api.model.Drink
 import com.akiniyalocts.tail.ui.favorites.FavoriteDrinkListItem
 import com.akiniyalocts.tail.ui.favorites.FavoritesEmptyState
@@ -60,7 +61,7 @@ fun HomeList(navController: NavController, viewModel: HomeViewModel = hiltViewMo
                 HomeHeaderText(stringResource = R.string.title_popular_drinks)
                 LazyRow {
                     items(popularItems.value){ item ->
-                        SmallDrinkCard(drink = item, onClick = { drink ->
+                        MediumDrinkCard(drink = item, onClick = { drink ->
                             navController.navigate("drink/${drink.idDrink}")
                         })
                     }
@@ -72,20 +73,21 @@ fun HomeList(navController: NavController, viewModel: HomeViewModel = hiltViewMo
             HomeHeaderText(stringResource = R.string.title_favorite_drinks)
         }
 
-
         if (favorites.value.isEmpty()) {
             item {
                 FavoritesEmptyState(Modifier.fillMaxWidth())
             }
         } else {
             items(favorites.value.take(4)) {
-                FavoriteDrinkListItem(drink = it)
+                FavoriteDrinkListItem(drink = it){
+                    navController.navigate("drink/${it.id}")
+                }
             }
 
             item{
                 TextButton(
                     onClick = {
-
+                        navController.navigate(TopLevelScreen.FavoritesScreen.route)
                     },
                     modifier = Modifier.padding(12.dp)
                 ) {
@@ -94,32 +96,18 @@ fun HomeList(navController: NavController, viewModel: HomeViewModel = hiltViewMo
             }
         }
 
-
-
-
-
         item {
             HomeHeaderText(stringResource = R.string.title_drink_categories)
         }
 
         items(categories.value.chunked(2)){
-            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)) {
-                it.forEach {
-                    OutlinedButton(
-                        modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 4.dp),
-                        onClick = {
-                            //TODO: navigate to drinks for categories
-                        }
-                    ) {
-                        Text(it.name)
-                    }
-                }
-            }
+            ChunkedCategories(it)
         }
     }
 }
 
-@Preview
+
+
 @Composable
 fun HomeHeaderText(stringResource: Int? = null, string: String? = null){
     val text = if(stringResource != null) stringResource(id = stringResource) else string.orEmpty()
@@ -132,7 +120,27 @@ fun HomeHeaderText(stringResource: Int? = null, string: String? = null){
 }
 
 @Composable
-fun SmallDrinkCard(drink: Drink, onClick: ((Drink) -> (Unit))){
+fun ChunkedCategories(categories: List<Category>) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
+    ) {
+        categories.forEach {
+
+            OutlinedButton(
+                modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 4.dp),
+                onClick = {
+                    // prefilled search for category
+                }
+            ) {
+                Text(it.name)
+            }
+        }
+    }
+}
+
+@Composable
+fun MediumDrinkCard(drink: Drink, onClick: ((Drink) -> (Unit))){
 
     val painter =  rememberCoilPainter(
         request = drink.drinkThumb ?: R.drawable.ic_baseline_local_drink_24
