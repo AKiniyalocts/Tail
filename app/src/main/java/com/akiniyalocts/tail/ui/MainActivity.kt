@@ -30,11 +30,10 @@ import com.akiniyalocts.tail.ui.theme.TailTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 
-@ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @ExperimentalAnimationApi
-    @FlowPreview
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -58,9 +57,8 @@ object DeepLinkScreen {
     const val drinkIdArg: String = "drinkId"
 }
 
-@ExperimentalAnimationApi
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialApi::class)
 @FlowPreview
-@ExperimentalMaterialApi
 @Composable
 fun TailBottomNavigation(){
     val navController = rememberNavController()
