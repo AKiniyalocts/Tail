@@ -15,9 +15,9 @@ See [Issues](https://github.com/AKiniyalocts/Tail/issues)
 
 ## Project info
 (I'll try to keep this updated)
-- Android Studio Arctic Fox | 2020.3.1 Beta 4
-- Compose compiler: `1.0.0-beta09`
-- Kotlin: `1.5.10`
-- AGP: `7.0.0-beta04`
+- Android Studio Arctic Fox | 2020.3.1 Patch 4
+- Compose compiler: `1.1.0-beta04`
+- Kotlin: `1.6.0`
+- AGP: `7.0.4`
 
 **The default project setup uses [CocktailDb's](https://www.thecocktaildb.com/api.php) test api key (which has limited functionality)**
