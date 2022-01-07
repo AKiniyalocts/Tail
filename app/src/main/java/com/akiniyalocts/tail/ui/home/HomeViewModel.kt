@@ -17,7 +17,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val searchRepo: SearchRepo, private val favoriteDrinkDao: FavoriteDrinkDao): ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val searchRepo: SearchRepo,
+    private val favoriteDrinkDao: FavoriteDrinkDao
+) : ViewModel() {
     val popularItems = mutableStateOf(emptyList<Drink>())
     val popularItemsState = mutableStateOf<AsyncState<Unit>>(Loading)
 

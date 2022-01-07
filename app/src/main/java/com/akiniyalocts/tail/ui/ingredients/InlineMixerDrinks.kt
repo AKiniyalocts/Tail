@@ -30,7 +30,11 @@ import com.google.accompanist.coil.rememberCoilPainter
 
 @ExperimentalAnimationApi
 @Composable
-fun InlineMixerDrinks(foundMixers: List<MixerDrink>, selectedMixers: Set<String>, onMixerDrinkClicked: (MixerDrink) -> Unit) {
+fun InlineMixerDrinks(
+    foundMixers: List<MixerDrink>,
+    selectedMixers: Set<String>,
+    onMixerDrinkClicked: (MixerDrink) -> Unit
+) {
     AnimatedVisibility(
         visible = foundMixers.isNotEmpty() && selectedMixers.isNotEmpty(),
         enter = expandVertically(),
@@ -46,7 +50,7 @@ fun InlineMixerDrinks(foundMixers: List<MixerDrink>, selectedMixers: Set<String>
 
 
 @Composable
-fun InlineMixerDrinkCard(mixerDrink: MixerDrink, onMixerDrinkClicked: (MixerDrink) -> Unit){
+fun InlineMixerDrinkCard(mixerDrink: MixerDrink, onMixerDrinkClicked: (MixerDrink) -> Unit) {
     val painter = rememberCoilPainter(request = mixerDrink.thumbnail)
 
     Surface(
@@ -55,17 +59,24 @@ fun InlineMixerDrinkCard(mixerDrink: MixerDrink, onMixerDrinkClicked: (MixerDrin
             .size(80.dp)
             .clickable {
                 onMixerDrinkClicked(mixerDrink)
-            }
-        ,
+            },
         shape = RoundedCornerShape(8.dp)
-    ){
-        Image(painter = painter, contentDescription = mixerDrink.name, contentScale = ContentScale.Crop)
+    ) {
+        Image(
+            painter = painter,
+            contentDescription = mixerDrink.name,
+            contentScale = ContentScale.Crop
+        )
     }
 }
 
 @ExperimentalAnimationApi
 @Composable
-fun MixerChipGroup(mixers: Set<String>, onRemoveMixer: (String) -> Unit, onClearMixers: () -> Unit){
+fun MixerChipGroup(
+    mixers: Set<String>,
+    onRemoveMixer: (String) -> Unit,
+    onClearMixers: () -> Unit
+) {
     AnimatedVisibility(
         visible = mixers.isNotEmpty(),
         enter = expandVertically(),
@@ -86,7 +97,8 @@ fun MixerChipGroup(mixers: Set<String>, onRemoveMixer: (String) -> Unit, onClear
                 LazyRow(
                     Modifier
                         .weight(1f)
-                        .align(Alignment.CenterVertically)) {
+                        .align(Alignment.CenterVertically)
+                ) {
                     items(mixers.toList()) {
                         TagChip(
                             text = it,

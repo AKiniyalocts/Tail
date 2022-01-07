@@ -16,32 +16,38 @@ interface IngredientsRepo {
 
     val userIngredientsFlow: Flow<List<UserIngredient>>
 
-    val allIngredients : Flow<List<LocalIngredient>>
+    val allIngredients: Flow<List<LocalIngredient>>
 }
-class IngredientsRepoImp(private val api: CocktailApi, private val ingredientsDao: LocalIngredientDao, val userIngredientsDao: UserIngredientDao): IngredientsRepo{
+
+class IngredientsRepoImp(
+    private val api: CocktailApi,
+    private val ingredientsDao: LocalIngredientDao,
+    val userIngredientsDao: UserIngredientDao
+) : IngredientsRepo {
 
     override val allIngredients = ingredientsDao.getIngredients().distinctUntilChanged()
 
     private val ingredientsFailure = Exception("Unable to get ingredients")
 
-    override val userIngredientsFlow: Flow<List<UserIngredient>> = userIngredientsDao.getUserIngredients()
+    override val userIngredientsFlow: Flow<List<UserIngredient>> =
+        userIngredientsDao.getUserIngredients()
 
     override suspend fun saveIngredients(): Result<Boolean> {
-        return try{
+        return try {
             val results = api.getAllIngredients().mapToResult()
 
-            if(results.isSuccess){
+            if (results.isSuccess) {
                 val ingredients = results.getOrNull()?.ingredients?.map {
                     LocalIngredient(it.name)
-                } ?:  throw ingredientsFailure
+                } ?: throw ingredientsFailure
 
                 ingredientsDao.insertAllIngredients(ingredients)
 
                 Result.success(true)
-            }else{
+            } else {
                 Result.failure(ingredientsFailure)
             }
-        } catch (e: Exception){
+        } catch (e: Exception) {
             Result.failure(e)
         }
 
@@ -51,7 +57,7 @@ class IngredientsRepoImp(private val api: CocktailApi, private val ingredientsDa
         return try {
             userIngredientsDao.addUserIngredient(ingredient.toUserIngredient())
             Result.success(Unit)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }
@@ -60,7 +66,7 @@ class IngredientsRepoImp(private val api: CocktailApi, private val ingredientsDa
         return try {
             userIngredientsDao.removeUserIngredientByName(removeIngredient.name)
             Result.success(Unit)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }
@@ -69,7 +75,7 @@ class IngredientsRepoImp(private val api: CocktailApi, private val ingredientsDa
         return try {
             userIngredientsDao.removeUserIngredientByName(removeIngredient.name)
             Result.success(Unit)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }

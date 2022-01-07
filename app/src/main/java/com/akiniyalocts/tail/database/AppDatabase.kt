@@ -10,11 +10,11 @@ import com.akiniyalocts.tail.database.userIngredient.UserIngredient
 import com.akiniyalocts.tail.database.userIngredient.UserIngredientDao
 
 @Database(
-    entities = [FavoriteDrink::class,  LocalIngredient::class, UserIngredient::class],
+    entities = [FavoriteDrink::class, LocalIngredient::class, UserIngredient::class],
     version = 4,
     exportSchema = true
 )
-abstract class AppDatabase: RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
     abstract fun getFavoriteDrinksDao(): FavoriteDrinkDao
     abstract fun getLocalIngredientsDao(): LocalIngredientDao
     abstract fun getUserIngredientsDao(): UserIngredientDao

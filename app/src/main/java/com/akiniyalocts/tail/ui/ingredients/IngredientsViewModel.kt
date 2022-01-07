@@ -14,10 +14,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class IngredientsViewModel @Inject constructor(private val ingredientsRepo: IngredientsRepo, private val searchRepo: SearchRepo): ViewModel() {
+class IngredientsViewModel @Inject constructor(
+    private val ingredientsRepo: IngredientsRepo,
+    private val searchRepo: SearchRepo
+) : ViewModel() {
 
     val screenState = mutableStateOf<IngredientsListScreenState>(IngredientsListScreenState.Loading)
-    val selectedMixers = mutableStateOf( mutableSetOf<String>())
+    val selectedMixers = mutableStateOf(mutableSetOf<String>())
     val foundMixers = mutableStateOf(listOf<MixerDrink>())
 
     init {
@@ -25,7 +28,10 @@ class IngredientsViewModel @Inject constructor(private val ingredientsRepo: Ingr
             ingredientsRepo.userIngredientsFlow
                 .distinctUntilChanged()
                 .collect {
-                    val state = if(it.isEmpty()) IngredientsListScreenState.Empty else IngredientsListScreenState.Success(it)
+                    val state =
+                        if (it.isEmpty()) IngredientsListScreenState.Empty else IngredientsListScreenState.Success(
+                            it
+                        )
                     screenState.value = state
                 }
         }
@@ -49,14 +55,14 @@ class IngredientsViewModel @Inject constructor(private val ingredientsRepo: Ingr
         }
         selectedMixers.value = updated
         // clear out
-        if(updated.isEmpty()){
+        if (updated.isEmpty()) {
             foundMixers.value = emptyList()
-        }else {
-           getDrinksForMixers()
+        } else {
+            getDrinksForMixers()
         }
     }
 
-    fun getDrinksForMixers() = viewModelScope.launch{
+    fun getDrinksForMixers() = viewModelScope.launch {
         searchRepo.getDrinksForMixers(selectedMixers.value).fold(
             {
                 foundMixers.value = it

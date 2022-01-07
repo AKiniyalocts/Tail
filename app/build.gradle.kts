@@ -29,7 +29,10 @@ android {
 
     buildTypes {
 
-        val cocktailDbApiKey: String = gradleLocalProperties(rootProject.rootDir).getProperty("cocktailDbApiKey", "\"1\"") // default to '1' as that is the "test api key" for cocktaildb
+        val cocktailDbApiKey: String = gradleLocalProperties(rootProject.rootDir).getProperty(
+            "cocktailDbApiKey",
+            "\"1\""
+        ) // default to '1' as that is the "test api key" for cocktaildb
 
         release {
             isMinifyEnabled = false
@@ -76,34 +79,34 @@ dependencies {
 
     val compose_version = rootProject.extra["compose_version"] as String
 
-    implementation ("androidx.compose.runtime:runtime:$compose_version")
-    implementation ("androidx.compose.ui:ui:$compose_version")
-    implementation ("androidx.compose.foundation:foundation-layout:$compose_version")
-    implementation ("androidx.compose.material:material:$compose_version")
-    implementation ("androidx.compose.material:material-icons-extended:$compose_version")
-    implementation ("androidx.compose.foundation:foundation:$compose_version")
-    implementation ("androidx.compose.animation:animation:$compose_version")
-    implementation ("androidx.compose.ui:ui-tooling:$compose_version")
-    implementation ("androidx.compose.runtime:runtime-livedata:$compose_version")
+    implementation("androidx.compose.runtime:runtime:$compose_version")
+    implementation("androidx.compose.ui:ui:$compose_version")
+    implementation("androidx.compose.foundation:foundation-layout:$compose_version")
+    implementation("androidx.compose.material:material:$compose_version")
+    implementation("androidx.compose.material:material-icons-extended:$compose_version")
+    implementation("androidx.compose.foundation:foundation:$compose_version")
+    implementation("androidx.compose.animation:animation:$compose_version")
+    implementation("androidx.compose.ui:ui-tooling:$compose_version")
+    implementation("androidx.compose.runtime:runtime-livedata:$compose_version")
 
-    implementation ("androidx.appcompat:appcompat:1.3.0")
-    implementation ("androidx.activity:activity-ktx:1.2.3")
-    implementation ("androidx.core:core-ktx:1.6.0-alpha02")
-    implementation ("androidx.activity:activity-compose:1.3.0-beta02")
+    implementation("androidx.appcompat:appcompat:1.3.0")
+    implementation("androidx.activity:activity-ktx:1.2.3")
+    implementation("androidx.core:core-ktx:1.6.0-alpha02")
+    implementation("androidx.activity:activity-compose:1.3.0-beta02")
 
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07")
 
-    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha03")
+    implementation("androidx.navigation:navigation-compose:2.4.0-alpha03")
 
     val accompanistVersion = "0.12.0"
-    implementation ("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
-    implementation ("com.google.accompanist:accompanist-coil:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-coil:$accompanistVersion")
 
-    implementation ("com.google.dagger:hilt-android:2.40.5")
-    kapt ("com.google.dagger:hilt-android-compiler:2.40.5")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0-beta01")
+    implementation("com.google.dagger:hilt-android:2.40.5")
+    kapt("com.google.dagger:hilt-android-compiler:2.40.5")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0-beta01")
 
     val roomVersion = "2.4.0-alpha01"
     implementation("androidx.room:room-runtime:$roomVersion")

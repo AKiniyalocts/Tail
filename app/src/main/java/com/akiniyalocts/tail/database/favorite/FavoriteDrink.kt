@@ -17,8 +17,8 @@ data class FavoriteDrink(
     val ingredients: String,
     val instructions: String? = null,
     val measurements: String? = null
-){
-    companion object{
+) {
+    companion object {
         fun fromNetwork(drink: Drink) = FavoriteDrink(
             id = drink.idDrink,
             isAlcoholic = drink.alcoholic == "Alcoholic",

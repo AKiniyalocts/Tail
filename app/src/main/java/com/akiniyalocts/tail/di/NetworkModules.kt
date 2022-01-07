@@ -18,7 +18,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModules{
+object NetworkModules {
 
     @Singleton
     @Provides
@@ -33,12 +33,16 @@ object NetworkModules{
 
     @Singleton
     @Provides
-    fun provideSearchRepo(api: CocktailApi): SearchRepo{
+    fun provideSearchRepo(api: CocktailApi): SearchRepo {
         return SearchRepoImp(api)
     }
 
     @Singleton
     @Provides
-    fun provideIngredientRepo(api: CocktailApi, localIngredientDao: LocalIngredientDao, userIngredientDao: UserIngredientDao): IngredientsRepo = IngredientsRepoImp(api, localIngredientDao, userIngredientDao)
+    fun provideIngredientRepo(
+        api: CocktailApi,
+        localIngredientDao: LocalIngredientDao,
+        userIngredientDao: UserIngredientDao
+    ): IngredientsRepo = IngredientsRepoImp(api, localIngredientDao, userIngredientDao)
 }
 

@@ -15,16 +15,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-
 sealed class CocktailDetailsViewState {
     object Loading : CocktailDetailsViewState()
     data class Content(val data: CocktailDetailsDisplayModel) : CocktailDetailsViewState()
     data class Error(val message: String) :
         CocktailDetailsViewState() {
-            companion object {
-                operator fun invoke(message: String? = null) = CocktailDetailsViewState.Error(message ?: "An Unknown Error Has Occurred")
-            }
+        companion object {
+            operator fun invoke(message: String? = null) =
+                CocktailDetailsViewState.Error(message ?: "An Unknown Error Has Occurred")
         }
+    }
 }
 
 @HiltViewModel
@@ -39,11 +39,12 @@ class CocktailDetailViewModel @Inject constructor(
         mutableStateOf<CocktailDetailsViewState>(CocktailDetailsViewState.Loading)
     val displayDrink = derivedStateOf { _displayDrink.value }
     val pageTitle = derivedStateOf {
-        when(val state = displayDrink.value) {
+        when (val state = displayDrink.value) {
             is CocktailDetailsViewState.Content -> state.data.name
             is CocktailDetailsViewState.Error -> "Error"
             CocktailDetailsViewState.Loading -> "Loading..."
-        } }
+        }
+    }
 
 
     var drinkId: String? = null
@@ -67,7 +68,8 @@ class CocktailDetailViewModel @Inject constructor(
                 .onSuccess {
                     drink.value = it
                     _displayDrink.value = CocktailDetailsViewState.Content(
-                        CocktailDetailsDisplayModel.fromDrink(it))
+                        CocktailDetailsDisplayModel.fromDrink(it)
+                    )
                 }.onFailure {
                     _displayDrink.value = CocktailDetailsViewState.Error(it.message)
                 }

@@ -12,7 +12,7 @@ interface LocalIngredientDao {
     fun getIngredients(): Flow<List<LocalIngredient>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllIngredients( localIngredients: List<LocalIngredient>)
+    suspend fun insertAllIngredients(localIngredients: List<LocalIngredient>)
 
     @Query("DELETE FROM LOCALINGREDIENT")
     suspend fun deleteAllIngredients()

@@ -11,17 +11,26 @@ interface CocktailApi {
     suspend fun getPopularCocktails(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey): Response<DrinksResponse>
 
     @GET("api/json/v2/{apiKey}/search.php")
-    suspend fun getSearchResults(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey, @Query("s") query: String): Response<DrinksResponse>
+    suspend fun getSearchResults(
+        @Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey,
+        @Query("s") query: String
+    ): Response<DrinksResponse>
 
     @GET("api/json/v2/{apiKey}/list.php?c=list")
     suspend fun getCategories(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey): Response<CategoriesResponse>
 
     @GET("api/json/v2/{apiKey}/lookup.php")
-    suspend fun getCocktail(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey, @Query("i") id: String): Response<DrinksResponse>
+    suspend fun getCocktail(
+        @Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey,
+        @Query("i") id: String
+    ): Response<DrinksResponse>
 
     @GET("api/json/v2/{apiKey}/list.php?i=list")
     suspend fun getAllIngredients(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey): Response<IngredientsResponse>
 
     @GET("api/json/v2/{apiKey}/filter.php?i=Dry_Vermouth,Gin,Anis")
-    suspend fun getDrinksWithMixers(@Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey, @Query("i") mixers: String): Response<MixerDrinkResponse>
+    suspend fun getDrinksWithMixers(
+        @Path("apiKey") apiKey: String = BuildConfig.cocktailDbApiKey,
+        @Query("i") mixers: String
+    ): Response<MixerDrinkResponse>
 }

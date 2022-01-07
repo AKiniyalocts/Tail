@@ -13,7 +13,8 @@ import javax.inject.Inject
 
 @FlowPreview
 @HiltViewModel
-class AddIngredientViewModel @Inject constructor(private val ingredientsRepo: IngredientsRepo): ViewModel() {
+class AddIngredientViewModel @Inject constructor(private val ingredientsRepo: IngredientsRepo) :
+    ViewModel() {
     val screenState = mutableStateOf(AddIngredientSearchState.Initial)
     val query = MutableStateFlow("")
     val results = mutableStateOf<List<LocalIngredient>>(emptyList())
@@ -42,9 +43,9 @@ class AddIngredientViewModel @Inject constructor(private val ingredientsRepo: In
         ingredientsRepo.saveIngredients()
     }
 
-    private fun filterForQuery(query: String) = viewModelScope.launch{
+    private fun filterForQuery(query: String) = viewModelScope.launch {
         val start = allIngredients.first()
-        if(query.isEmpty()){
+        if (query.isEmpty()) {
             results.value = start
             return@launch
         }
@@ -52,7 +53,7 @@ class AddIngredientViewModel @Inject constructor(private val ingredientsRepo: In
         results.value = start.filter { it.name.contains(query, ignoreCase = true) }
     }
 
-    fun addIngredient(ingredient: LocalIngredient) = viewModelScope.launch{
+    fun addIngredient(ingredient: LocalIngredient) = viewModelScope.launch {
         ingredientsRepo.addIngredient(ingredient)
     }
 

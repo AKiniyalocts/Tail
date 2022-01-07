@@ -36,34 +36,34 @@ import kotlinx.coroutines.launch
 fun AddIngredientScreen(
     scaffoldState: BottomSheetScaffoldState,
     viewModel: AddIngredientViewModel = hiltViewModel()
-){
+) {
 
     val focusManager = LocalFocusManager.current
     val state = viewModel.screenState.value
     val ingredients = viewModel.results
     val query = viewModel.query
-    val textState = remember{ mutableStateOf(TextFieldValue()) }
+    val textState = remember { mutableStateOf(TextFieldValue()) }
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
             TopAppBar(
                 navigationIcon = {
-                        IconButton(
-                            onClick = {
-                                coroutineScope.launch {
-                                    when {
-                                        scaffoldState.bottomSheetState.isCollapsed -> scaffoldState.bottomSheetState.expand()
-                                        scaffoldState.bottomSheetState.isExpanded -> scaffoldState.bottomSheetState.collapse()
-                                    }
+                    IconButton(
+                        onClick = {
+                            coroutineScope.launch {
+                                when {
+                                    scaffoldState.bottomSheetState.isCollapsed -> scaffoldState.bottomSheetState.expand()
+                                    scaffoldState.bottomSheetState.isExpanded -> scaffoldState.bottomSheetState.collapse()
                                 }
                             }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Add,
-                                contentDescription = "expand"
-                            )
                         }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Add,
+                            contentDescription = "expand"
+                        )
+                    }
                 },
                 title = {
                     Text(
@@ -89,7 +89,7 @@ fun AddIngredientScreen(
                                 textState.value = TextFieldValue()
                                 query.value = ""
                             }
-                        ){
+                        ) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
                                 contentDescription = stringResource(id = R.string.clear_filter)
@@ -129,7 +129,7 @@ fun AddIngredientScreen(
                                 actionLabel = "Undo"
                             )
 
-                            when(snackbarResult){
+                            when (snackbarResult) {
                                 SnackbarResult.ActionPerformed -> {
                                     viewModel.removeIngredient(it)
                                 }
@@ -158,23 +158,26 @@ fun AddIngredientScreen(
 }
 
 @Composable
-fun IngredientsList(ingredients: List<LocalIngredient>, onAddIngredient: (LocalIngredient) -> Unit) {
+fun IngredientsList(
+    ingredients: List<LocalIngredient>,
+    onAddIngredient: (LocalIngredient) -> Unit
+) {
     LazyColumn {
-        items(ingredients){
+        items(ingredients) {
             AddIngredientListItem(ingredient = it, onAddIngredient = onAddIngredient)
         }
     }
 }
 
 @Composable
-fun AddIngredientListItem(ingredient: LocalIngredient, onAddIngredient: (LocalIngredient) -> Unit){
+fun AddIngredientListItem(ingredient: LocalIngredient, onAddIngredient: (LocalIngredient) -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
             .clickable {
                 onAddIngredient(ingredient)
             }
-    ){
+    ) {
         Text(
             ingredient.name,
             fontWeight = FontWeight.Medium,

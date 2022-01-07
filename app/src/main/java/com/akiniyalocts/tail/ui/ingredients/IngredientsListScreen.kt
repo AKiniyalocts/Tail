@@ -20,7 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.akiniyalocts.tail.R
 import com.akiniyalocts.tail.api.model.MixerDrink
 import com.akiniyalocts.tail.database.userIngredient.UserIngredient
@@ -32,7 +31,10 @@ import kotlinx.coroutines.launch
 @FlowPreview
 @ExperimentalMaterialApi
 @Composable
-fun IngredientsListScreen(navController: NavController, viewModel: IngredientsViewModel = hiltViewModel()){
+fun IngredientsListScreen(
+    onDrinkClicked: (drinkId: String) -> (Unit),
+    viewModel: IngredientsViewModel = hiltViewModel()
+) {
     val scaffoldState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -56,7 +58,7 @@ fun IngredientsListScreen(navController: NavController, viewModel: IngredientsVi
             )
         },
         sheetShape = RoundedCornerShape(12.dp)
-    ){
+    ) {
         UserIngredientsListScreen(
             viewModel,
             it,
@@ -66,7 +68,7 @@ fun IngredientsListScreen(navController: NavController, viewModel: IngredientsVi
                 }
             },
             onNavigateToDrinkDetail = {
-                navController.navigate("drink/${it.id}")
+                onDrinkClicked(it.id)
             }
         )
     }
@@ -85,37 +87,37 @@ fun UserIngredientsListScreen(
     val mixerItems = viewModel.selectedMixers
     val foundMixers = viewModel.foundMixers
 
-    when(val screenState = state.value){
-       is IngredientsListScreenState.Success -> {
+    when (val screenState = state.value) {
+        is IngredientsListScreenState.Success -> {
 
-           Column {
+            Column {
 
-               MixerChipGroup(
-                   mixers = mixerItems.value,
-                   onRemoveMixer = {
-                       viewModel.removeMixer(it)
-                   }
-               ){
-                   viewModel.clearMixers()
-               }
-               InlineMixerDrinks(foundMixers.value, mixerItems.value, onNavigateToDrinkDetail)
+                MixerChipGroup(
+                    mixers = mixerItems.value,
+                    onRemoveMixer = {
+                        viewModel.removeMixer(it)
+                    }
+                ) {
+                    viewModel.clearMixers()
+                }
+                InlineMixerDrinks(foundMixers.value, mixerItems.value, onNavigateToDrinkDetail)
 
-               LazyColumn(Modifier.padding(paddingValues)) {
-                   items(screenState.items) {
-                       UserIngredientItem(
-                           it,
-                           onAddMixer = {
-                               viewModel.addMixer(it)
-                           },
-                           onRemoveIngredient = {
-                               viewModel.removeIngredient(it)
-                           }
-                       )
-                   }
-               }
-           }
+                LazyColumn(Modifier.padding(paddingValues)) {
+                    items(screenState.items) {
+                        UserIngredientItem(
+                            it,
+                            onAddMixer = {
+                                viewModel.addMixer(it)
+                            },
+                            onRemoveIngredient = {
+                                viewModel.removeIngredient(it)
+                            }
+                        )
+                    }
+                }
+            }
 
-       }
+        }
         IngredientsListScreenState.Empty -> {
             UserIngredientEmptyState(onAddNewIngredient)
         }
@@ -144,7 +146,10 @@ fun UserIngredientEmptyState(onAddNewIngredient: () -> Unit) {
                 modifier = Modifier.padding(end = 8.dp),
                 tint = MaterialTheme.colors.onSecondary
             )
-            Text(text = stringResource(id = R.string.add_some_ingredients), color = MaterialTheme.colors.onSecondary)
+            Text(
+                text = stringResource(id = R.string.add_some_ingredients),
+                color = MaterialTheme.colors.onSecondary
+            )
         }
     }
 }

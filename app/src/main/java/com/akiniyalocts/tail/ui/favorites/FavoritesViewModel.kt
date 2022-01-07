@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
 @HiltViewModel
-class FavoritesViewModel @Inject constructor(private val favoriteDrinkDao: FavoriteDrinkDao): ViewModel() {
+class FavoritesViewModel @Inject constructor(private val favoriteDrinkDao: FavoriteDrinkDao) :
+    ViewModel() {
     val favoriteDrinks = favoriteDrinkDao.getFavorites().distinctUntilChanged()
 }
