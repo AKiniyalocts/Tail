@@ -25,14 +25,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import coil.transform.RoundedCornersTransformation
 import com.akiniyalocts.tail.R
 import com.akiniyalocts.tail.database.favorite.FavoriteDrink
 import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable
-fun FavoritesListScreen(navController: NavController, viewModel: FavoritesViewModel = hiltViewModel()){
+fun FavoritesListScreen(
+    onDrinkClicked: (drinkId: String) -> (Unit),
+    viewModel: FavoritesViewModel = hiltViewModel()
+) {
     val favorites = viewModel.favoriteDrinks.collectAsState(initial = emptyList())
 
     Scaffold(
@@ -49,15 +51,15 @@ fun FavoritesListScreen(navController: NavController, viewModel: FavoritesViewMo
             )
         }
     ) {
-        if(favorites.value.isNotEmpty()) {
+        if (favorites.value.isNotEmpty()) {
             LazyColumn {
                 items(favorites.value) {
-                    FavoriteDrinkListItem(drink = it){
-                        navController.navigate("drink/${it.id}")
+                    FavoriteDrinkListItem(drink = it) {
+                        onDrinkClicked(it.id)
                     }
                 }
             }
-        }else{
+        } else {
             FavoritesEmptyState(modifier = Modifier.fillMaxSize())
         }
     }
@@ -65,7 +67,7 @@ fun FavoritesListScreen(navController: NavController, viewModel: FavoritesViewMo
 
 
 @Composable
-fun FavoriteDrinkListItem(drink: FavoriteDrink, onFavoriteClicked: (FavoriteDrink) -> Unit){
+fun FavoriteDrinkListItem(drink: FavoriteDrink, onFavoriteClicked: (FavoriteDrink) -> Unit) {
     val expanded = remember {
         mutableStateOf(false)
     }
@@ -121,7 +123,7 @@ fun FavoriteDrinkListItem(drink: FavoriteDrink, onFavoriteClicked: (FavoriteDrin
                 }
             }
 
-            if(expanded.value){
+            if (expanded.value) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = stringResource(id = R.string.title_instructions),
@@ -140,13 +142,18 @@ fun FavoriteDrinkListItem(drink: FavoriteDrink, onFavoriteClicked: (FavoriteDrin
 }
 
 @Composable
-fun FavoritesEmptyState(modifier: Modifier){
+fun FavoritesEmptyState(modifier: Modifier) {
 
     Box(
         modifier.padding(top = 12.dp, bottom = 12.dp), contentAlignment = Alignment.Center
     ) {
         Row {
-            Icon(imageVector = Icons.Outlined.LocalDrink, contentDescription = null, modifier = Modifier.padding(end = 8.dp), tint = MaterialTheme.colors.onSecondary)
+            Icon(
+                imageVector = Icons.Outlined.LocalDrink,
+                contentDescription = null,
+                modifier = Modifier.padding(end = 8.dp),
+                tint = MaterialTheme.colors.onSecondary
+            )
             Text(text = "Your favorite drinks show here", color = MaterialTheme.colors.onSecondary)
         }
     }

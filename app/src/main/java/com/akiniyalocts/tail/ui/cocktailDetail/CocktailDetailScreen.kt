@@ -17,12 +17,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.akiniyalocts.tail.R
 import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable
-fun CocktailDetailScreen(navController: NavController, drinkId: String?, viewModel: CocktailDetailViewModel = hiltViewModel()) {
+fun CocktailDetailScreen(
+    onBackPressed: () -> (Unit),
+    drinkId: String?,
+    viewModel: CocktailDetailViewModel = hiltViewModel()
+) {
     viewModel.drinkId = drinkId
     val isFavorite = viewModel.isFavorite.value
     val viewState = viewModel.displayDrink.value
@@ -33,9 +36,7 @@ fun CocktailDetailScreen(navController: NavController, drinkId: String?, viewMod
             TopAppBar(
                 title = { Text(text = title) },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        navController.popBackStack()
-                    }) {
+                    IconButton(onClick = onBackPressed) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Back"

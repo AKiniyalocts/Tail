@@ -47,10 +47,17 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-sealed class TopLevelScreen(val route: String, val selectedIcon: ImageVector, val unselectedIcon: ImageVector){
-    object HomeScreen: TopLevelScreen("Home", Icons.Filled.House, Icons.Outlined.House)
-    object FavoritesScreen: TopLevelScreen("Favorites", Icons.Filled.Favorite, Icons.Outlined.FavoriteBorder)
-    object Ingredients: TopLevelScreen("Ingredients", Icons.Filled.ShoppingCart, Icons.Outlined.ShoppingCart)
+sealed class TopLevelScreen(
+    val route: String,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector
+) {
+    object HomeScreen : TopLevelScreen("Home", Icons.Filled.House, Icons.Outlined.House)
+    object FavoritesScreen :
+        TopLevelScreen("Favorites", Icons.Filled.Favorite, Icons.Outlined.FavoriteBorder)
+
+    object Ingredients :
+        TopLevelScreen("Ingredients", Icons.Filled.ShoppingCart, Icons.Outlined.ShoppingCart)
 }
 
 object DeepLinkScreen {
@@ -60,16 +67,16 @@ object DeepLinkScreen {
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialApi::class)
 @FlowPreview
 @Composable
-fun TailBottomNavigation(){
+fun TailBottomNavigation() {
     val navController = rememberNavController()
     val bottomNavItems = listOf(
         TopLevelScreen.HomeScreen,
         TopLevelScreen.FavoritesScreen,
         TopLevelScreen.Ingredients
     )
-    Scaffold (
+    Scaffold(
         bottomBar = {
-            BottomNavigation{
+            BottomNavigation {
                 val navBackStackEntry = navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry.value?.destination?.route
 
@@ -81,7 +88,7 @@ fun TailBottomNavigation(){
                         },
                         icon = {
                             Icon(
-                                imageVector = if(currentRoute == screen.route) screen.selectedIcon else screen.unselectedIcon,
+                                imageVector = if (currentRoute == screen.route) screen.selectedIcon else screen.unselectedIcon,
                                 contentDescription = screen.route
                             )
                         },
@@ -106,30 +113,55 @@ fun TailBottomNavigation(){
                 }
             }
         }
-    ){
+    ) {
         TailNavHost(navController = navController, it)
     }
 }
+
 @ExperimentalAnimationApi
 @FlowPreview
 @ExperimentalMaterialApi
 @Composable
 fun TailNavHost(navController: NavHostController, paddingValues: PaddingValues) {
-    NavHost(navController = navController, startDestination = TopLevelScreen.HomeScreen.route, modifier = Modifier.padding(paddingValues)){
-        composable(TopLevelScreen.HomeScreen.route){
-            HomeScreen(navController)
+    NavHost(
+        navController = navController,
+        startDestination = TopLevelScreen.HomeScreen.route,
+        modifier = Modifier.padding(paddingValues)
+    ) {
+        composable(TopLevelScreen.HomeScreen.route) {
+            HomeScreen(
+                onDrinkClicked = {
+                    navController.navigate("drink/$it")
+                },
+                onFavoritesClicked = {
+                    navController.navigate(TopLevelScreen.FavoritesScreen.route)
+                }
+            )
         }
 
-        composable("drink/{drinkId}"){
-            CocktailDetailScreen(navController, it.arguments?.getString(DeepLinkScreen.drinkIdArg))
+        composable("drink/{drinkId}") {
+            CocktailDetailScreen(
+                onBackPressed = {
+                    navController.popBackStack()
+                },
+                drinkId = it.arguments?.getString(DeepLinkScreen.drinkIdArg)
+            )
         }
 
-        composable(TopLevelScreen.FavoritesScreen.route){
-            FavoritesListScreen(navController = navController)
+        composable(TopLevelScreen.FavoritesScreen.route) {
+            FavoritesListScreen(
+                onDrinkClicked = {
+                    navController.navigate("drink/${it}")
+                }
+            )
         }
 
-        composable(TopLevelScreen.Ingredients.route){
-            IngredientsListScreen(navController = navController)
+        composable(TopLevelScreen.Ingredients.route) {
+            IngredientsListScreen(
+                onDrinkClicked = {
+                    navController.navigate("drink/${it}")
+                }
+            )
         }
 
     }

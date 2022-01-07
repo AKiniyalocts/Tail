@@ -18,9 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.akiniyalocts.tail.R
-import com.akiniyalocts.tail.ui.TopLevelScreen
 import com.akiniyalocts.tail.api.Category
 import com.akiniyalocts.tail.api.model.Drink
 import com.akiniyalocts.tail.ui.favorites.FavoriteDrinkListItem
@@ -30,26 +28,34 @@ import com.google.accompanist.imageloading.ImageLoadState
 
 
 @Composable
-fun HomeScreen(navController: NavController){
+fun HomeScreen(onDrinkClicked: (drinkId: String) -> Unit, onFavoritesClicked: () -> (Unit)) {
     Scaffold(
-        topBar = { TopAppBar(
-            title = {
-                Text(
-                    text = stringResource(id = R.string.app_name),
-                    fontWeight = FontWeight.Black,
-                    fontSize = 24.sp
-                )
-            },
-            backgroundColor = MaterialTheme.colors.primary
-        )
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.app_name),
+                        fontWeight = FontWeight.Black,
+                        fontSize = 24.sp
+                    )
+                },
+                backgroundColor = MaterialTheme.colors.primary
+            )
         }
     ) {
-        HomeList(navController)
+        HomeList(
+            onDrinkClicked = onDrinkClicked,
+            onFavoritesClicked = onFavoritesClicked
+        )
     }
 }
 
 @Composable
-fun HomeList(navController: NavController, viewModel: HomeViewModel = hiltViewModel()){
+fun HomeList(
+    onDrinkClicked: (drinkId: String) -> Unit,
+    onFavoritesClicked: () -> (Unit),
+    viewModel: HomeViewModel = hiltViewModel()
+) {
     val popularItems = viewModel.popularItems
     val categories = viewModel.drinkCategories
     val favorites = viewModel.favoriteDrinks.collectAsState(initial = emptyList())
@@ -60,9 +66,9 @@ fun HomeList(navController: NavController, viewModel: HomeViewModel = hiltViewMo
             Column(Modifier.fillMaxWidth()) {
                 HomeHeaderText(stringResource = R.string.title_popular_drinks)
                 LazyRow {
-                    items(popularItems.value){ item ->
+                    items(popularItems.value) { item ->
                         MediumDrinkCard(drink = item, onClick = { drink ->
-                            navController.navigate("drink/${drink.idDrink}")
+                            onDrinkClicked(drink.idDrink)
                         })
                     }
                 }
@@ -79,15 +85,15 @@ fun HomeList(navController: NavController, viewModel: HomeViewModel = hiltViewMo
             }
         } else {
             items(favorites.value.take(4)) {
-                FavoriteDrinkListItem(drink = it){
-                    navController.navigate("drink/${it.id}")
+                FavoriteDrinkListItem(drink = it) {
+                    onDrinkClicked(it.id)
                 }
             }
 
-            item{
+            item {
                 TextButton(
                     onClick = {
-                        navController.navigate(TopLevelScreen.FavoritesScreen.route)
+                        onFavoritesClicked()
                     },
                     modifier = Modifier.padding(12.dp)
                 ) {
@@ -100,17 +106,16 @@ fun HomeList(navController: NavController, viewModel: HomeViewModel = hiltViewMo
             HomeHeaderText(stringResource = R.string.title_drink_categories)
         }
 
-        items(categories.value.chunked(2)){
+        items(categories.value.chunked(2)) {
             ChunkedCategories(it)
         }
     }
 }
 
 
-
 @Composable
-fun HomeHeaderText(stringResource: Int? = null, string: String? = null){
-    val text = if(stringResource != null) stringResource(id = stringResource) else string.orEmpty()
+fun HomeHeaderText(stringResource: Int? = null, string: String? = null) {
+    val text = if (stringResource != null) stringResource(id = stringResource) else string.orEmpty()
     Text(
         text = text,
         fontWeight = FontWeight.Black,
@@ -140,9 +145,9 @@ fun ChunkedCategories(categories: List<Category>) {
 }
 
 @Composable
-fun MediumDrinkCard(drink: Drink, onClick: ((Drink) -> (Unit))){
+fun MediumDrinkCard(drink: Drink, onClick: ((Drink) -> (Unit))) {
 
-    val painter =  rememberCoilPainter(
+    val painter = rememberCoilPainter(
         request = drink.drinkThumb ?: R.drawable.ic_baseline_local_drink_24
     )
 
@@ -163,18 +168,20 @@ fun MediumDrinkCard(drink: Drink, onClick: ((Drink) -> (Unit))){
                 modifier = Modifier.weight(0.8f),
                 contentScale = ContentScale.Crop
             )
-            when(painter.loadState){
-                ImageLoadState.Empty -> { }
+            when (painter.loadState) {
+                ImageLoadState.Empty -> {}
                 is ImageLoadState.Loading -> {
                     Box(Modifier.fillMaxSize()) {
                         CircularProgressIndicator(Modifier.align(Alignment.Center))
                     }
                 }
-                is ImageLoadState.Error, is ImageLoadState.Success -> { }
+                is ImageLoadState.Error, is ImageLoadState.Success -> {}
             }
-            Text(drink.drink, modifier = Modifier
-                .padding(8.dp)
-                .weight(0.2f))
+            Text(
+                drink.drink, modifier = Modifier
+                    .padding(8.dp)
+                    .weight(0.2f)
+            )
         }
 
     }
